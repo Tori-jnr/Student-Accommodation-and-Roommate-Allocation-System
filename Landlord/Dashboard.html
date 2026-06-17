@@ -17,45 +17,89 @@
         </div>
     </header>
 
-    <!-- Three-Panel Wireframe Layout -->
+    <!-- Three-Panel Layout -->
     <div class="portal-grid">
         
-        <!-- PANEL 1: Left Input/Profile Form -->
+        <!-- PANEL 1: Upload Property / Room Form -->
         <section class="panel panel-left">
-            <h2>Account Details</h2>
-            <form class="wireframe-form">
-                <div class="input-block"></div>
-                <div class="input-block"></div>
-                <div class="input-block"></div>
-                <div class="input-block large"></div>
-                <button type="button" class="wireframe-btn">Save Changes</button>
+            <h2>List New Accommodation</h2>
+            <form class="actual-form">
+                <!-- Mod 1: Added semantic text input for Property Name -->
+                <div class="form-control">
+                    <label for="prop-name">Property / Hostel Name</label>
+                    <input type="text" id="prop-name" placeholder="e.g., Pine Crest Heights" required>
+                </div>
+
+                <!-- Mod 2: Added a dropdown wrapper to select Room Type -->
+                <div class="form-control">
+                    <label for="room-type">Room Specification</label>
+                    <select id="room-type">
+                        <option value="single">Single Room (Private)</option>
+                        <option value="2-share">2-Man Sharing</option>
+                        <option value="4-share">4-Man Sharing</option>
+                    </select>
+                </div>
+
+                <!-- Mod 3: Added currency/number input for Price -->
+                <div class="form-control">
+                    <label for="price">Price (Per Semester)</label>
+                    <input type="number" id="price" placeholder="Amount in $" required>
+                </div>
+
+                <!-- Mod 4: Swapped basic input block for an actual multi-line text area -->
+                <div class="form-control">
+                    <label for="amenities">Amenities & Rules</label>
+                    <textarea id="amenities" rows="4" placeholder="Wi-Fi, Generator, No pets..."></textarea>
+                </div>
+
+                <!-- Mod 5: Stylized actionable submit button -->
+                <button type="submit" class="action-btn">Publish Listing</button>
             </form>
         </section>
 
-        <!-- PANEL 2: Center Data Table / Listings -->
+        <!-- PANEL 2: Active Room & Student Allocation Table -->
         <section class="panel panel-center">
-            <h2>Overview Table</h2>
-            <div class="wireframe-table">
-                <div class="table-header">
-                    <span>Header 1</span>
-                    <span>Header 2</span>
-                    <span>Header 3</span>
-                </div>
-                <div class="table-row"><span>Data A</span><span>Data B</span><span>Data C</span></div>
-                <div class="table-row"><span>Data A</span><span>Data B</span><span>Data C</span></div>
-                <div class="table-row"><span>Data A</span><span>Data B</span><span>Data C</span></div>
-                <div class="table-row"><span>Data A</span><span>Data B</span><span>Data C</span></div>
+            <h2>Room Allocation Directory</h2>
+            <div class="actual-table-container">
+                <table class="data-table">
+                    <!-- Mod 6: Converted generic layout div blocks to standard HTML table headers -->
+                    <thead>
+                        <tr>
+                            <th>Hostel / Room</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Assigned Student</th>
+                        </tr>
+                    </thead>
+                    <!-- Mod 7: Added mock rows representing real database allocation statuses -->
+                    <tbody>
+                        <tr>
+                            <td>Pine Crest - Room 101</td>
+                            <td>Single</td>
+                            <td><span class="badge occupied">Occupied</span></td>
+                            <td>Alex Mercer (ID: 4092)</td>
+                        </tr>
+                        <tr>
+                            <td>Pine Crest - Room 102</td>
+                            <td>2-Share</td>
+                            <td><span class="badge pending">Pending Match</span></td>
+                            <td>Sarah Jenkins (Waiting Partner)</td>
+                        </tr>
+                        <tr>
+                            <td>Apex Hall - Room 05</td>
+                            <td>4-Share</td>
+                            <td><span class="badge vacant">Vacant</span></td>
+                            <td><em>None</em></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
-        <!-- PANEL 3: Right Activity Stream / Cards -->
+        <!-- PANEL 3: System / Partner Stream -->
         <section class="panel panel-right">
             <h2>Recent Notifications</h2>
             <div class="card-stream">
-                <div class="stream-card">
-                    <div class="card-icon"></div>
-                    <div class="card-text"></div>
-                </div>
                 <div class="stream-card">
                     <div class="card-icon"></div>
                     <div class="card-text"></div>
