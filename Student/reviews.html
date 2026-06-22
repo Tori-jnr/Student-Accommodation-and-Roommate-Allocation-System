@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews | Roomly</title>
+  <link rel="stylesheet" href="../assets/css/reviews.css">
+  <script src ="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <h2 class="logo">Roomly<span class="dot">.</span></h2>
+            
+            <div class="nav-container">
+                <span class="nav-heading">Student Menu</span>
+                <nav class="nav-links">
+                    <a href="dashboard.html">
+                        <i data-lucide="layout-dashboard"></i>
+                        Dashboard
+                    </a>
+                    <a href="hostels.html">
+                        <i data-lucide="search"></i>
+                        Search Hostels
+                    </a>
+                    <a href="Roommate.html">
+                        <i data-lucide="sliders"></i>
+                        Preferences
+                    </a>
+                    <a href="matchresults.html">
+                        <i data-lucide="sparkles"></i>
+                        Match Results
+                    </a>
+
+                            <a href="reviews.html" class ="active">
+                                <i data-lucide="star"></i>
+                                 Reviews</a>
+                </nav>
+
+                <span class="nav-heading">Account</span>
+                <nav class="nav-links">
+                    <a href="../Login.html" class="logout-link">
+                        <i data-lucide="log-out"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div class="page-title">
+          
+            <h1>Hostel reviews</h1>
+            <p>Share your experience to help fellow students make informed decisions.</p>
+          </div>
+
+<!-- Clickable Interactive User Profile Widget -->
+                <div class="user-profile-widget" onclick="window.location.href='profile.html'" title="View Profile">
+                    <div class="profile-container">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" 
+                             alt="Amina Otieno" 
+                             class="profile-pic"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="profile-pic-fallback" style="display: none;">AO</div>
+                    </div>
+                    <span class="username">Lumine</span>
+                </div>
+      </header>
+
+
+      <section class="page">
+        <div class="two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          
+          <form class="panel">
+            <div class="section-title">
+              <h2>Submit a review</h2>
+              <p class="muted" style="font-size: 0.9em; margin-bottom: 10px;">You can only review verified hostels you have interacted with.</p>
+
+            </div>
+            <div class="form-grid">
+              <div class="field-full">
+                <label for="hostel">Select Hostel</label>
+                <select id="hostel">
+                  <option>Greenview Residence</option>
+                  <option>Himalayan Hostel</option>
+                  <option>Scholar Heights</option>
+                  <option>5 Point Residences</option>
+                  <option>Happy Living</option>
+                  <option>Sunrise Hostels</option>
+                  <option>Magharibi Courts</option>
+                </select>
+              </div>
+              <div class="field-full">
+                <label for="rating">Rating</label>
+                <select id="rating">
+                  <option>5 stars - Excellent</option>
+                  <option>4 stars - Good</option>
+                  <option>3 stars - Average</option>
+                  <option>2 stars - Poor</option>
+                  <option>1 star - Terrible</option>
+                </select>
+              </div>
+
+<div class="field-full">
+                <label for="verification-code">Verification Code</label>
+                <input type="text" id="verification-code" placeholder="Enter code provided by your landlord (e.g., GR-938)" required>
+              </div>
+
+              <div class="field-full">
+                <label for="review">Your Review</label>
+                <textarea id="review" placeholder="How was the security, water supply, and noise level?" style="height: 100px;"></textarea>
+              </div>
+            </div>
+            <div class="button-row" style="margin-top: 18px;">
+              <button class="button" type="button">Submit review</button>
+            </div>
+          </form>
+
+          <aside class="panel">
+            <div class="section-title">
+              <h2>Your past reviews</h2>
+            </div>
+            <div class="review-list">
+              <div class="review-item" style="margin-bottom: 15px; padding-bottom: 15px; ">
+                <strong>Scholar Heights</strong> <span style="color: gold;">★★★★☆</span>
+                <p class="muted" style="margin-top: 5px;">Quiet environment and fair pricing. Caretaker is friendly.</p>
+              </div>
+              <div class="review-item">
+                <strong>Greenview Residence</strong> <span style="color: gold;">★★★★★</span>
+                <p class="muted" style="margin-top: 5px;">Reliable water supply and secure gate access.</p>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../assets/js/reviews.js"></script>
+  <script> lucide.createIcons() </script>
+
+  <script>
+    // Sync Profile Data from Local Storage to Dashboard
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('student-name');
+            const savedAvatar = localStorage.getItem('student-avatar');
+
+            // Update Name and Greeting
+            if (savedName) {
+                const greetingText = document.querySelector('.welcome-text p');
+                if (greetingText) {
+                    const firstName = savedName.split(' ')[0]; // Gets just the first name
+                    greetingText.innerText = `Welcome back, ${firstName}`;
+                }
+
+                const userNameText = document.querySelector('.username');
+                if (userNameText) userNameText.innerText = savedName;
+            }
+
+            // Update Profile Photo
+            if (savedAvatar) {
+                const avatarImg = document.querySelector('.profile-pic');
+                const fallbackBadge = document.querySelector('.profile-pic-fallback');
+                if (avatarImg) {
+                    avatarImg.src = savedAvatar;
+                    avatarImg.style.display = 'block';
+                    if (fallbackBadge) fallbackBadge.style.display = 'none';
+                }
+            }
+        });
+        
+    </script>
+
+
+</body>
+</html>
