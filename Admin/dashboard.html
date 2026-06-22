@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Student Housing Portal</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="dashboard.html">
+        <span class="brand-mark">SH</span>
+        <span>Student Housing <small>Admin workspace</small></span>
+      </a>
+      <div class="side-section">Admin</div>
+      <nav class="side-nav" aria-label="Admin navigation">
+        <a class="active" href="dashboard.html">Dashboard</a>
+        <a href="verify-listings.html">Verify listings</a>
+        <a href="manage-users.html">Manage users</a>
+        <a href="reports.html">Reports</a>
+      </nav>
+      <div class="side-section">Account</div>
+      <nav class="side-nav" aria-label="Account navigation">
+        <a href="../index.html">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div class="page-title">
+          <div>
+            <h1>Admin dashboard</h1>
+            <p>Monitor users, listings, and system activity.</p>
+          </div>
+        </div>
+        <div class="user-pill">
+          <span class="avatar">M</span>
+          <span>System Admin</span>
+        </div>
+      </header>
+
+      <section class="page">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-label">Pending listings</span>
+            <div class="stat-value">7</div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Verified listings</span>
+            <div class="stat-value">24</div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Students</span>
+            <div class="stat-value">126</div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Landlords</span>
+            <div class="stat-value">18</div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid" style="margin-top: 18px;">
+          <section class="panel">
+            <div class="section-title">
+              <h2>Pending verification</h2>
+              <a class="button secondary" href="verify-listings.html">Open queue</a>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Hostel</th>
+                    <th>Landlord</th>
+                    <th>Location</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Greenview Annex</td>
+                    <td>Greenview Properties</td>
+                    <td>Madaraka</td>
+                    <td>15 Jun 2026</td>
+                    <td><span class="chip warning">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>Elimu Flats</td>
+                    <td>Elimu Homes</td>
+                    <td>Langata</td>
+                    <td>14 Jun 2026</td>
+                    <td><span class="chip warning">Pending</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="panel">
+            <div class="section-title">
+              <h2>System activity</h2>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <strong>New landlord registered</strong>
+                <span class="muted">Elimu Homes submitted account details.</span>
+              </div>
+              <div class="activity-item">
+                <strong>Review flagged</strong>
+                <span class="muted">Review text requires admin check.</span>
+              </div>
+              <div class="activity-item">
+                <strong>Listing approved</strong>
+                <span class="muted">Karibu Courts is visible to students.</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
