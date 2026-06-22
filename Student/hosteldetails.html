@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Details | Student Housing Portal</title>
+  <link rel="stylesheet" href="../assets/css/hosteldetails.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="dashboard-shell">
+    <aside class="sidebar">
+      <h2 class="logo">Roomly<span class="dot">.</span></h2>
+
+      <div class="nav-container">
+        <span class="nav-heading">Student Menu</span>
+        <nav class="nav-links" aria-label="Student navigation">
+          <a href="dashboard.html">
+            <i data-lucide="layout-dashboard"></i>
+            Dashboard
+          </a>
+          <a class="active" href="hostels.html">
+            <i data-lucide="search"></i>
+            Search Hostels
+          </a>
+          <a href="Roommate.html">
+            <i data-lucide="sliders"></i>
+            Preferences
+          </a>
+          <a href="matchresults.html">
+            <i data-lucide="sparkles"></i>
+            Match Results
+          </a>
+          <a href="reviews.html">
+            <i data-lucide="star"></i>
+            Reviews
+          </a>
+        </nav>
+
+        <span class="nav-heading">Account</span>
+        <nav class="nav-links" aria-label="Account navigation">
+          <a href="../Login.html" class="logout-link">
+            <i data-lucide="log-out"></i>
+            Logout
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div class="page-title">
+          <div>
+            <h1 data-hostel-name>Greenview Residence</h1>
+            <p data-hostel-location>Madaraka, 0.5km from campus</p>
+          </div>
+        </div>
+        <a class="button secondary" href="hostels.html">Back to listings</a>
+      </header>
+
+      <section class="page">
+        <div class="detail-layout">
+          <section class="detail-main">
+            <div class="detail-hero"></div>
+            <div class="panel">
+              <div class="section-title">
+                <div>
+                  <h2>Hostel information</h2>
+                  <p>Verified by system administrator.</p>
+                </div>
+                <span class="chip success" data-status>Verified</span>
+              </div>
+              <div class="three-column">
+                <div class="info-block">
+                  <strong>Room type</strong>
+                  <p class="muted" data-room-type>Double room</p>
+                </div>
+                <div class="info-block">
+                  <strong>Availability</strong>
+                  <p class="muted" data-availability>Vacant</p>
+                </div>
+                <div class="info-block">
+                  <strong>Price</strong>
+                  <p class="muted" data-price>KES 42,000 per semester</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="section-title">
+                <h2>Student reviews</h2>
+              </div>
+              <div class="review-list" data-review-list>
+                <div class="review-item">
+                  <strong>4.5 stars - Clean and close to campus</strong>
+                  <span class="muted">Security is reliable and rooms are quiet in the evening.</span>
+                </div>
+                <div class="review-item">
+                  <strong>4 stars - Good transport access</strong>
+                  <span class="muted">The caretaker responds quickly when there is an issue.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="panel action-panel">
+            <div class="section-title">
+              <div>
+                <h2>Actions</h2>
+                <p>Continue your accommodation process.</p>
+              </div>
+            </div>
+            <div class="timeline">
+              <a class="button" href="virtual-tour.html" data-tour-link>Open virtual tour</a>
+              <a class="button" href="contactlandlord.html" data-contact-link>Contact landlord</a>
+            </div>
+
+            <hr class="divider">
+
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>Landlord</strong>
+                <span class="muted" data-landlord>Greenview Properties</span>
+              </div>
+              <div class="timeline-item">
+                <strong>Amenities</strong>
+                <span class="muted" data-amenities>Wi-Fi, study room, laundry, water storage</span>
+              </div>
+              <div class="timeline-item">
+                <strong>Verification date</strong>
+                <span class="muted" data-verification-date>15 June 2026</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../assets/js/hosteldetails.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
