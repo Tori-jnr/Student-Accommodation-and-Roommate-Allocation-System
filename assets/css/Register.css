@@ -1,0 +1,343 @@
+/* ==========================================================================
+   IMPORTS & SYSTEM DESIGN TOKENS (Cyber Teal & Deep Navy)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-dark-navy: #060b13;
+  --neon-cyan: #00f0ff;
+  --neon-blue: #0072ff;
+  --glass-white: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --text-pure: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.65);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-dark-navy);
+  color: var(--text-pure);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   1. CYBERPUNK GRADIENT BACKGROUND OVERLAY
+   ========================================================================== */
+.auth-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px; /* Space between form and visual board */
+  padding: 40px 5%;
+  position: relative;
+  
+  /* Same stunning background as Login for consistency */
+  background: radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.15), transparent 45%),
+              linear-gradient(135deg, rgba(6, 11, 19, 0.94), rgba(1, 33, 67, 0.88)),
+              url('https://images.pexels.com/photos/16808496/pexels-photo-16808496.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ==========================================================================
+   2. GLASSMORPHIC TOP NAVIGATION BAR
+   ========================================================================== */
+.topbar {
+  background: rgba(6, 11, 19, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  position: relative;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text-pure);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+}
+
+.brand small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.brand-mark {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+  color: #060b13;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.nav-pills { display: flex; gap: 8px; }
+
+.nav-pills a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.nav-pills a:hover {
+  color: var(--text-pure);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-pills a.active {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-pure);
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
+   3. LEFT SIDE: THE REGISTRATION FORM
+   ========================================================================== */
+.auth-panel {
+  flex: 1;
+  max-width: 550px;
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 45px 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+}
+
+.auth-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+}
+
+.auth-card h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff 60%, var(--neon-cyan));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.signup-text {
+    text-align: center;
+}
+
+/* Form Grid Layout (2 Columns) */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Forces email/full-width fields to span both columns */
+.field-full {
+  grid-column: span 2;
+}
+
+.field label, .field-full label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--neon-cyan);
+  margin-bottom: 8px;
+}
+
+.field input, .field select,
+.field-full input, .field-full select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-pure);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.field input::placeholder, .field-full input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.field input:focus, .field select:focus,
+.field-full input:focus, .field-full select:focus {
+  border-color: var(--neon-cyan);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+}
+
+.field select option, .field-full select option {
+  background-color: var(--bg-dark-navy);
+  color: var(--text-pure);
+}
+
+/* ==========================================================================
+   4. BUTTONS
+   ========================================================================== */
+.button-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.button {
+  flex: 1;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+  color: #060b13;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 240, 255, 0.55);
+}
+
+.button.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-pure);
+  border: 1px solid var(--glass-border);
+  box-shadow: none;
+}
+
+.button.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================================================
+   5. RIGHT SIDE: THE VISUAL BOARD (Holographic Cards)
+   ========================================================================== */
+.auth-visual {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.visual-board h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.three-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Floating Glass Cards */
+.map-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--neon-cyan);
+  padding: 20px 25px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.map-card:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.map-card strong {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-pure);
+}
+
+/* Neon Status Chips */
+.chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chip.info {
+  background: rgba(0, 114, 255, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(0, 114, 255, 0.5);
+}
+
+.chip.warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+}
+
+.chip.success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+/* Responsive adjustment for smaller screens */
+@media (max-width: 968px) {
+  .auth-page {
+    flex-direction: column;
+  }
+  .auth-visual {
+    display: none; /* Hide visual board on small screens to save space */
+  }
+}
