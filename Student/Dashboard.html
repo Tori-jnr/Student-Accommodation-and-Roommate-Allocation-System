@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Roomly</title>
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <!-- Lucide Icons for clean UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="dashboard-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="logo">Roomly<span class="dot">.</span></h2>
+            
+            <div class="nav-container">
+                <span class="nav-heading">Student Menu</span>
+                <nav class="nav-links">
+                    <a href="dashboard.html" class="active">
+                        <i data-lucide="layout-dashboard"></i>
+                        Dashboard
+                    </a>
+                    <a href="hostels.html">
+                        <i data-lucide="search"></i>
+                        Search Hostels
+                    </a>
+                    <a href="Roommate.html">
+                        <i data-lucide="sliders"></i>
+                        Preferences
+                    </a>
+                    <a href="matchresults.html">
+                        <i data-lucide="sparkles"></i>
+                        Match Results
+                    </a>
+
+                            <a href="reviews.html">
+                                <i data-lucide="star"></i>
+                                 Reviews</a>
+
+                </nav>
+
+                <span class="nav-heading">Account</span>
+                <nav class="nav-links">
+                    <a href="../Login.html" class="logout-link">
+                        <i data-lucide="log-out"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="welcome-text">
+                    <h1>Your Next Home Awaits</h1>
+                    <p>Browse trusted hostels and connect with compatible roommates today.</p>
+                </div>
+                
+                <!-- Clickable Interactive User Profile Widget -->
+                <div class="user-profile-widget" onclick="window.location.href='profile.html'" title="View Profile">
+                    <div class="profile-container">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" 
+                             alt="Amina Otieno" 
+                             class="profile-pic"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="profile-pic-fallback" style="display: none;">AO</div>
+                    </div>
+                    <span class="username">Lumine</span>
+                </div>
+            </header>
+
+            <!-- Stats Row -->
+            <section class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon cyan-glow"><i data-lucide="shield-check"></i></div>
+                    <div>
+                        <h3>Verified Hostels</h3>
+                        <p>24</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue-glow"><i data-lucide="home"></i></div>
+                    <div>
+                        <h3>Available Rooms</h3>
+                        <p>67</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple-glow"><i data-lucide="heart"></i></div>
+                    <div>
+                        <h3>Best Match</h3>
+                        <p>92%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow-glow"><i data-lucide="star"></i></div>
+                    <div>
+                        <h3>Reviews Posted</h3>
+                        <p>3</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grid Layout -->
+            <section class="content-grid">
+                <!-- Recommended Hostels Section -->
+                <section class="recommendations panel">
+                    <div class="panel-header">
+                        <h2>Recommended Hostels</h2>
+                        <a href="hostels.html" class="view-all-btn">View All</a>
+                    </div>
+                    
+                    <div class="hostel-list">
+                        <!-- Hostel 1 -->
+                        <article class="hostel-card">
+                            <div class="hostel-image" style="background-image: url('https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80')">
+                                <span class="badge verified">Verified</span>
+                            </div>
+                            <div class="hostel-info">
+                                <h3>Greenview Residence</h3>
+                                <p class="location"><i data-lucide="map-pin"></i> Madaraka, 0.5 km from campus</p>
+                                <div class="tags">
+                                    <span class="tag">Double</span>
+                                    <span class="tag">Wi-Fi</span>
+                                    <span class="tag">Laundry</span>
+                                </div>
+                                <div class="price-action">
+                                    <span class="price">KES 42,000 <small>/ month</small></span>
+                                    <button class="action-btn">Open</button>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Hostel 2 -->
+                        <article class="hostel-card">
+                            <div class="hostel-image" style="background-image: url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80')">
+                                <span class="badge verified">Verified</span>
+                            </div>
+                            <div class="hostel-info">
+                                <h3>Magharibi Courts</h3>
+                                <p class="location"><i data-lucide="map-pin"></i> South B, near Shopping Mall</p>
+                                <div class="tags">
+                                    <span class="tag">Single</span>
+                                    <span class="tag">Hot Shower</span>
+                                </div>
+                                <div class="price-action">
+                                    <span class="price">KES 58,000 <small>/ month</small></span>
+                                    <button class="action-btn">Open</button>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Hostel 3 -->
+                        <article class="hostel-card">
+                            <div class="hostel-image" style="background-image: url('https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=600&q=80')">
+                                <span class="badge verified">Verified</span>
+                            </div>
+                            <div class="hostel-info">
+                                <h3>Himalayan Hostel</h3>
+                                <p class="location"><i data-lucide="map-pin"></i> Lang'ata road, near campus link</p>
+                                <div class="tags">
+                                    <span class="tag">Premium Studio</span>
+                                    <span class="tag">Gym access</span>
+                                </div>
+                                <div class="price-action">
+                                    <span class="price">KES 85,000 <small>/ month</small></span>
+                                    <button class="action-btn">Open</button>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Hostel 4 -->
+                        <article class="hostel-card">
+                            <div class="hostel-image" style="background-image: url('https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80')">
+                                <span class="badge pending">Unverified</span>
+                            </div>
+                            <div class="hostel-info">
+                                <h3>Sunrise Hostels</h3>
+                                <p class="location"><i data-lucide="map-pin"></i> Nairobi West, 1.2 km from campus</p>
+                                <div class="tags">
+                                    <span class="tag">Quad Room</span>
+                                    <span class="tag">Study Room</span>
+                                </div>
+                                <div class="price-action">
+                                    <span class="price">KES 18,000 <small>/ month</small></span>
+                                    <button class="action-btn">Open</button>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Hostel 5 -->
+                        <article class="hostel-card">
+                            <div class="hostel-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80')">
+                                <span class="badge verified">Verified</span>
+                            </div>
+                            <div class="hostel-info">
+                                <h3>Scholar Heights</h3>
+                                <p class="location"><i data-lucide="map-pin"></i> Ongata Rongai, quiet zone</p>
+                                <div class="tags">
+                                    <span class="tag">Single Room</span>
+                                    <span class="tag">Balcony</span>
+                                </div>
+                                <div class="price-action">
+                                    <span class="price">KES 50,000 <small>/ month</small></span>
+                                    <button class="action-btn">Open</button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Activity Log Section -->
+                <aside class="activity panel">
+                    <div class="activity-header" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px;">
+                        <h2 style="margin: 0;">Activity</h2>
+                        <p class="section-desc" style="margin: 0;">Recent student actions</p>
+                    </div>
+                    
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon green"><i data-lucide="check-circle"></i></div>
+                            <div class="activity-details">
+                                <h4>Roommate preference saved</h4>
+                                <p>Quiet study hours and double room preferences secured.</p>
+                                <span class="activity-time">Just now</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon blue"><i data-lucide="eye"></i></div>
+                            <div class="activity-details">
+                                <h4>Virtual tour viewed</h4>
+                                <p>Explored Greenview Residence room B12 in 3D perspective.</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon yellow"><i data-lucide="star"></i></div>
+                            <div class="activity-details">
+                                <h4>Hostel review posted</h4>
+                                <p>Scholar Heights received a 5-star rating for amenities.</p>
+                                <span class="activity-time">Yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+
+        // Sync Profile Data from Local Storage to Dashboard
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('student-name');
+            const savedAvatar = localStorage.getItem('student-avatar');
+
+            // Update Name and Greeting
+            if (savedName) {
+                const greetingText = document.querySelector('.welcome-text p');
+                if (greetingText) {
+                    const firstName = savedName.split(' ')[0]; // Gets just the first name
+                    greetingText.innerText = `Welcome back, ${firstName}`;
+                }
+
+                const userNameText = document.querySelector('.username');
+                if (userNameText) userNameText.innerText = savedName;
+            }
+
+            // Update Profile Photo
+            if (savedAvatar) {
+                const avatarImg = document.querySelector('.profile-pic');
+                const fallbackBadge = document.querySelector('.profile-pic-fallback');
+                if (avatarImg) {
+                    avatarImg.src = savedAvatar;
+                    avatarImg.style.display = 'block';
+                    if (fallbackBadge) fallbackBadge.style.display = 'none';
+                }
+            }
+        });
+        
+    </script>
+</body>
+</html>
