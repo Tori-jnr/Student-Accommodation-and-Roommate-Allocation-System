@@ -1,0 +1,343 @@
+/* ==========================================================================
+   ROOMLY PRO: Match Results Glassmorphism Theme
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-dark-navy: #060b13;
+    --glass-panel: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --neon-cyan: #00f0ff;
+    --neon-blue: #0072ff;
+    --neon-green: #10b981; /* Added for match percentages */
+    --text-pure: #ffffff;
+    --text-secondary: #94a3b8;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif; 
+}
+
+body {
+    background: linear-gradient(rgba(6, 11, 19, 0.9), rgba(6, 11, 19, 0.9)), 
+                url('https://plus.unsplash.com/premium_photo-1738451201702-6099431434d9?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-pure);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.dashboard-shell { 
+    display: flex; 
+    width: 100%; 
+    min-height: 100vh; 
+}
+
+/* =========================================
+   SIDEBAR (Inherited Glass Styling)
+   ========================================= */
+.sidebar {
+    width: 280px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(35px) saturate(120%);
+    -webkit-backdrop-filter: blur(35px) saturate(120%);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 24px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo { 
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-pure); 
+    margin-bottom: 45px; 
+    letter-spacing: -1px;
+}
+
+.logo .dot {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex-grow: 1;
+}
+
+.nav-heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.nav-links { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+.nav-links a { 
+    color: var(--text-secondary); 
+    text-decoration: none; 
+    padding: 14px 18px; 
+    border-radius: 12px; 
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links a i {
+    width: 18px;
+    height: 18px;
+}
+
+.nav-links a:hover { 
+    background: rgba(255, 255, 255, 0.05); 
+    color: var(--text-pure); 
+    transform: translateX(4px);
+}
+
+.nav-links a.active { 
+    background: linear-gradient(90deg, rgba(0, 240, 255, 0.15), rgba(0, 114, 255, 0.05)); 
+    border-left: 3px solid var(--neon-cyan); 
+    color: var(--text-pure); 
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.logout-link {
+    color: var(--text-secondary) !important;
+}
+
+.logout-link:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
+}
+
+/* =========================================
+   MAIN LAYOUT & HEADER
+   ========================================= */
+.main { 
+    flex: 1; 
+    padding: 40px; 
+    overflow-y: auto; 
+}
+
+.main-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 40px; 
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+.page-title p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* User Widget - Fixed to Pill Shape */
+.user-profile-widget {
+    background: var(--glass-panel);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 8px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.user-profile-widget:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 240, 255, 0.15);
+}
+
+.profile-container {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--neon-cyan);
+    flex-shrink: 0;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-pic-fallback {
+    width: 100%;
+    height: 100%;
+    background: var(--neon-cyan);
+    color: #060b13;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.username {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-pure);
+    white-space: nowrap;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+.button {
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+    border: none;
+    color: #060b13;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+    display: inline-block;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5);
+}
+
+.button.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-pure);
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
+}
+
+.button.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================
+   MATCH RESULTS SPECIFIC STYLES
+   ========================================= */
+.page {
+    max-width: 1200px;
+}
+
+/* Grid Layout for Match Cards */
+.three-column {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Match Card Glass Panel */
+.panel { 
+    background: var(--glass-panel); 
+    padding: 30px; 
+    border-radius: 24px; 
+    border: 1px solid var(--glass-border); 
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 240, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 35px -10px rgba(0, 240, 255, 0.2);
+}
+
+.match-head h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-pure);
+}
+
+.muted {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Tags & Chips */
+.meta-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.chip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-pure);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Match Quality Indicator Chip */
+.chip.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--neon-green);
+    border-color: rgba(16, 185, 129, 0.3);
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .three-column {
+        grid-template-columns: 1fr;
+    }
+}
