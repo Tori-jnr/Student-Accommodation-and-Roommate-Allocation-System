@@ -58,7 +58,7 @@
                <small>Landlord Management Suite</small>
                     <h1>Accommodation Matrix</h1>
                                     </div>
-                <div class="user-profile-widget" onclick="openLandlordModal()" style="cursor: pointer;">
+                <div class="user-profile-widget"  style="cursor: pointer;">
     <div class="profile-container">M</div>
     <span class="username">Property Manager</span>
 </div>
@@ -199,34 +199,7 @@
         <button class="btn btn-secondary" onclick="document.getElementById('LandlordModal').style.display='none'">Close Dashboard View</button>
     </div>
 </div>
-
-<!-- LANDLORD PROFILE MODAL CONTAINER -->
-<div id="landlordModal" class="modal-overlay" onclick="closeLandlordModal(event)">
-    <div class="modal-panel">
-        <h2>Landlord Account Node</h2>
-        
-        <div class="modal-field">
-            <label>Verified Host Profile</label>
-            <span class="username cyan-text-glow">Property Manager</span>
-        </div>
-        
-        <div class="modal-field">
-            <label>Security Clearance Role</label>
-            <span>Accommodation Matrix Administrator</span>
-        </div>
-        
-        <div class="modal-field" style="margin-bottom: 28px;">
-            <label>Operational Hub Node</label>
-            <span style="color: var(--neon-blue);">Roomly Landlord Suite Alpha</span>
-        </div>
-        
-        <button class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="document.getElementById('landlordModal').style.display='none'">
-            Dismiss Profile View
-        </button>
-    </div>
-</div>
-
-
+    
 <!-- UPDATED LANDLORD LOGIC ENGINE WITH LOCALSTORAGE RETENTION SYSTEM -->
 <script>
     const CURRENT_LANDLORD_ID = localStorage.getItem('ACTIVE_LANDLORD_ID') || "L1"; 
@@ -397,16 +370,6 @@
             document.getElementById('profileModal').style.display = 'none';
         }
     }
-
-function openLandlordModal() {
-    document.getElementById('LandlordModal').style.display = 'flex';
-}
-
-function closeLandlordModal(event) {
-    if(event.target.id === 'LandlordModal') {
-        document.getElementById('LandlordModal').style.display = 'none';
-    }
-}
 
 function openLandlordModal() {
     document.getElementById('landlordModal').style.display = 'flex';
