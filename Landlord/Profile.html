@@ -3,45 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile | Roomly</title>
-    <link rel="stylesheet" href="../assets/css/Landlord Profile.css">
-    <!-- Lucide Icons for consistent design language -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Accounts - Roomly.</title>
+    <link rel="stylesheet" href="Landlord Dashboard.css">
 </head>
 <body>
 
     <div class="dashboard-shell">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <h2 class="logo">Roomly<span class="dot">.</span></h2>
-            
-            <div class="nav-container">
-                <span class="nav-heading">Landlord Menu</span>
-                <nav class="nav-links">
-                    <a href="Dashboard.html">
-                        <i data-lucide="layout-dashboard"></i>
-                        Dashboard
-                    </a>
-                </nav>
-
-                <span class="nav-heading">Account</span>
-                <nav class="nav-links">
-                    <a href="../Login.html" class="logout-link">
-                        <i data-lucide="log-out"></i>
-                        Logout
-                    </a>
-                </nav>
-            </div>
-        </aside>
+    
+<!-- COMPLETE INLINE SVG SIDEBAR SYSTEM -->
+<aside class="sidebar">
+    <div class="logo">
+        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+    </div>
+    
+    <div class="my-text">
+        <div>
+            <span class="nav-heading">Operations Hub</span>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="active">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    <span>Hostels</span>
+                </a>
+                <a href="student review.html">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>Student Reviews</span>
+                </a>
+              </nav>
+        </div>
+        
+        <div>
+            <span class="nav-heading">System Parameters</span>
+            <nav class="nav-links">
+                <a href="#">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Security Profiles</span>
+                </a>
+                <a href="../Authentication/login.html" class="logout-link" onclick="localStorage.clear(); window.location.reload();">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+</aside>
 
         <!-- Main Workspace -->
         <main class="main-content">
             <header class="top-header">
                 <div class="welcome-text">
                     <h1>My Profile</h1>
-                    <p>Your accommodation preference details at a glance.</p>
+                    <p>Your Listed Hostels and Ratings</p>
                 </div>
-                <a href="dashboard.html" class="back-btn">
+                <a href="Dashboard.html" class="back-btn">
                     <i data-lucide="arrow-left"></i> Back to Dashboard
                 </a>
             </header>
@@ -60,9 +73,9 @@
                         <input type="file" id="avatar-input" accept="image/*" style="display: none;">
                     </div>
 
-                    <h2 id="preview-name" class="profile-name">Amina Otieno</h2>
-                    <p class="profile-role">Verified Student</p>
-                    <p id="preview-bio" class="profile-bio">Looking for a quiet room near the main library with reliable internet access.</p>
+                    <h2 id="preview-name" class="profile-name">Linet Changamwe</h2>
+                    <p class="profile-role">Verified Landlord</p>
+                    <p id="preview-bio" class="profile-bio"></p>
                 </section>
 
                 <!-- Right Column: Settings Form -->
@@ -71,28 +84,28 @@
                     <form id="profile-form" onsubmit="saveProfile(event)">
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="student-name">Full Name</label>
-                                <input type="text" id="student-name" value="Amina Otieno" required>
+                                <label for="Landlord-name">Full Name</label>
+                                <input type="text" id="Landlord-name" value="Linet Changamwe" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="student-email">Email Address</label>
-                                <input type="email" id="student-email" value="amina.otieno@student.ac.ke" required>
+                                <input type="email" id="student-email" value="linet.changamwe@landlord.ac.ke" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="student-phone">Phone Number</label>
-                                <input type="tel" id="student-phone" value="+254 712 345 678" required>
+                                <input type="tel" id="student-phone" value="+254 758 845 011" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="student-university">University/Campus</label>
-                                <input type="text" id="student-university" value="Strathmore University" required>
+                                <label for="Landlord-Hostels">Hostels</label>
+                                <input type="text" id="Landlord-Hostels" value="Greenview" required>
                             </div>
 
                             <div class="form-group full-width">
-                                <label for="student-bio">Short Bio</label>
-                                <textarea id="student-bio" rows="4">Looking for a quiet room near the main library with reliable internet access.</textarea>
+                                <label for="Landlord-bio">Short Bio</label>
+                                <textarea id="Landlord-bio" rows="4"></textarea>
                             </div>
                         </div>
 
@@ -112,19 +125,19 @@
 
         // 1. On page load, read existing stored profile or set defaults
         window.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('student-name') || "Amina Otieno";
-            const savedEmail = localStorage.getItem('student-email') || "amina.otieno@student.ac.ke";
-            const savedPhone = localStorage.getItem('student-phone') || "+254 712 345 678";
-            const savedUniv = localStorage.getItem('student-university') || "Strathmore University";
-            const savedBio = localStorage.getItem('student-bio') || "Looking for a quiet room near the main library with reliable internet access.";
-            const savedAvatar = localStorage.getItem('student-avatar');
+            const savedName = localStorage.getItem('Landlord-name') || "Linet Changamwe";
+            const savedEmail = localStorage.getItem('Landlord-email') || "linet.changamwe@landlord.ac.ke";
+            const savedPhone = localStorage.getItem('Landlord-phone') || "+254 758 845 011";
+            const savedUniv = localStorage.getItem('Landlord-Hostel') || "Greenview";
+            const savedBio = localStorage.getItem('Landlord-bio') || "";
+            const savedAvatar = localStorage.getItem('Landlord-avatar');
 
             // Apply values to inputs
-            document.getElementById('student-name').value = savedName;
-            document.getElementById('student-email').value = savedEmail;
-            document.getElementById('student-phone').value = savedPhone;
-            document.getElementById('student-university').value = savedUniv;
-            document.getElementById('student-bio').value = savedBio;
+            document.getElementById('Landlord-name').value = savedName;
+            document.getElementById('Landlord-email').value = savedEmail;
+            document.getElementById('Landlord-phone').value = savedPhone;
+            document.getElementById('Landlord-Hostel').value = SavedHostel;
+            document.getElementById('Landlord-bio').value = savedBio;
 
             // Apply values to visual previews
             document.getElementById('preview-name').innerText = savedName;
@@ -155,17 +168,17 @@
         function saveProfile(event) {
             event.preventDefault();
 
-            const name = document.getElementById('student-name').value;
-            const email = document.getElementById('student-email').value;
-            const phone = document.getElementById('student-phone').value;
-            const university = document.getElementById('student-university').value;
-            const bio = document.getElementById('student-bio').value;
+            const name = document.getElementById('Landlord-name').value;
+            const email = document.getElementById('Landlord-email').value;
+            const phone = document.getElementById('Landlord-phone').value;
+            const university = document.getElementById('Landlord-Hostel').value;
+            const bio = document.getElementById('Landlord-bio').value;
 
-            localStorage.setItem('student-name', name);
-            localStorage.setItem('student-email', email);
-            localStorage.setItem('student-phone', phone);
-            localStorage.setItem('student-university', university);
-            localStorage.setItem('student-bio', bio);
+            localStorage.setItem('Landlord-name', name);
+            localStorage.setItem('Landlord-email', email);
+            localStorage.setItem('Landlord-phone', phone);
+            localStorage.setItem('Landlord-Hostel', hostel);
+            localStorage.setItem('Landlord-bio', bio);
 
             // Dynamically update visual preview panel
             document.getElementById('preview-name').innerText = name;
