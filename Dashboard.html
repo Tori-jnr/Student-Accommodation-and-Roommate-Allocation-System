@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landlord Operations Center - Roomly.</title>
+    <link rel="stylesheet" href="Dashboard.css">
+</head>
+<body>
+
+    <div class="dashboard-shell">
+        
+  
+<!-- COMPLETE INLINE SVG SIDEBAR SYSTEM -->
+<aside class="sidebar">
+    <div class="logo">
+        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+    </div>
+    
+    <div class="my-text">
+        <div>
+            <span class="nav-heading">Operations Hub</span>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="active">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    <span>Inventory & Listings</span>
+                </a>
+                <a href="student review.html">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>Student Reviews</span>
+                </a>
+              </nav>
+        </div>
+        
+        <div>
+            <span class="nav-heading">System Parameters</span>
+            <nav class="nav-links">
+                <a href="#">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Security Profiles</span>
+                </a>
+                <a href="../Authentication/login.html" class="logout-link" onclick="localStorage.clear(); window.location.reload();">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+
+        <!-- MAIN INTERACTIVE MONITOR -->
+        <main class="main-content">
+            
+            <!-- APPLICATION CONTROL HEADER -->
+            <header class="top-header">
+                <div class="welcome-text">
+               <small>Landlord Management Suite</small>
+                    <h1>Accommodation Matrix</h1>
+                                    </div>
+                <div class="user-profile-widget" onclick="openLandlordModal()" style="cursor: pointer;">
+    <div class="profile-container">M</div>
+    <span class="username">Property Manager</span>
+</div>
+
+            </header>
+
+            <!-- ANALYTICS HARDWARE STATE BLOCKS -->
+            <section class="stats-row">
+                <div class="stat-card">
+                    <h3>Total Properties</h3>
+                    <p class="cyan-glow" id="stat-total">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Allocations</h3>
+                    <p class="blue-glow" id="stat-active">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Groups</h3>
+                    <p class="yellow-glow">5</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Verification Status</h3>
+                    <p class="purple-glow" style="font-size: 1.25rem; margin-top: 6px;">Operational</p>
+                </div>
+            </section>
+
+            <!-- SPLIT CONTROL INTERFACE MATRIX -->
+            <div class="content-grid">
+                
+                <!-- PRIMARY ALLOCATION RECONCILIATION HARDWARE PANEL -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Active Properties & Allocation Matching Status</h2>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="table-search" placeholder="Filter property index by title..." onkeyup="filterTable()" style="max-width: 300px;">
+                    </div>
+
+                    <div style="width: 100%; overflow-x: auto;">
+                        <table class="data-table" id="inventory-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="text-align: left;">
+                                    <th style="padding: 14px 12px;">Hostel / Room</th>
+                                    <th style="padding: 14px 12px;">Specification</th>
+                                    <th style="padding: 14px 12px;">Price (Per Sem)</th>
+                                    <th style="padding: 14px 12px;">Availability</th>
+                                    <th style="padding: 14px 12px;">Matched Group</th>
+                                    <th style="padding: 14px 12px; text-align: center;">Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data injects here dynamically from data.json -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECONDARY TELEMETRY PANEL: FORMS AND ACTIVE THREAD ALERTS -->
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    
+                    <!-- INPUT CONTROLLER BLOCK -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>List New Accommodation</h2>
+                        </div>
+                        <form id="listing-form" style="display: grid; gap: 18px;" onsubmit="handleFormSubmit(event)">
+                            <div>
+                                <label for="hostel-name">Hostel / Property Title</label>
+                                <input type="text" id="hostel-name" placeholder="e.g., Greenview Premium Suites" required>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                <div>
+                                    <label for="room-spec">Room Layout</label>
+                                    <select id="room-spec">
+                                        <option value="Single Room">Single Room</option>
+                                        <option value="2 bedroom">2 bedroom</option>
+                                        <option value="4 bedroom">4 bedroom</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="room-price">Price (Per Sem)</label>
+                                    <input type="number" id="room-price" placeholder="Amount (KSH)" required>
+                                </div>
+                            </div>
+                            
+                            <!-- UPLOAD HOSTEL IMAGES FUNCTION -->
+                            <div>
+                                <label for="property-photos">Upload Hostel Images</label>
+                                <input type="file" id="property-photos" accept="image/*" multiple style="padding: 8px 12px; background: rgba(0, 0, 0, 0.25);">
+                            </div>
+
+                            <!-- UPLOAD VIRTUAL TOUR FUNCTION -->
+                            <div>
+                                <label for="virtual-tour">Upload Virtual Hostel Tour (.MP4 / Panoramic)</label>
+                                <input type="file" id="virtual-tour" accept="video/*,image/*" style="padding: 8px 12px; background: rgba(0, 0, 0, 0.25);">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="justify-content: center; padding: 14px; margin-top: 6px;">Create Hostel Listing</button>
+                        </form>
+                    </div>
+
+                    <!-- THREAD ALERT MONITOR BLOCK -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>System Stream Alerts</h2>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div style="padding: 14px; background: rgba(245, 158, 11, 0.05); border-left: 3px solid var(--warning); border-radius: 6px; font-size: 0.85rem; line-height: 1.4;">
+                                <strong style="color: var(--warning); display: block; margin-bottom: 2px;">Matching Pending</strong>
+                                3 target students are searching for pairing parameters inside Greenview Hall.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- DRILLDOWN OVERLAY MODAL -->
+    <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h3 id="modalTitle" style="margin-bottom: 12px; font-size: 1.3rem; letter-spacing: -0.3px;">Group Profile</h3>
+            <p id="modalDescription" style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">Telemetry parameters initialization...</p>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('profileModal').style.display='none'">Dismiss Panel</button>
+            </div>
+        </div>
+    </div>
+
+<!-- Landlord PROFILE MODAL LAYER -->
+<div id="LandlordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;" onclick="closeLandlordModal(event)">
+    <div class="panel" style="max-width: 400px; width: 100%; margin: 20px; border: 1px solid var(--glass-border); padding: 24px;">
+        <h2 style="margin-bottom: 16px;">Manager Profile</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 8px;"><strong>Role:</strong> Landlord</p>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;"><strong>Operational Node:</strong> Landlord Suite Alpha</p>
+        <button class="btn btn-secondary" onclick="document.getElementById('LandlordModal').style.display='none'">Close Dashboard View</button>
+    </div>
+</div>
+
+<!-- LANDLORD PROFILE MODAL CONTAINER -->
+<div id="landlordModal" class="modal-overlay" onclick="closeLandlordModal(event)">
+    <div class="modal-panel">
+        <h2>Landlord Account Node</h2>
+        
+        <div class="modal-field">
+            <label>Verified Host Profile</label>
+            <span class="username cyan-text-glow">Property Manager</span>
+        </div>
+        
+        <div class="modal-field">
+            <label>Security Clearance Role</label>
+            <span>Accommodation Matrix Administrator</span>
+        </div>
+        
+        <div class="modal-field" style="margin-bottom: 28px;">
+            <label>Operational Hub Node</label>
+            <span style="color: var(--neon-blue);">Roomly Landlord Suite Alpha</span>
+        </div>
+        
+        <button class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="document.getElementById('landlordModal').style.display='none'">
+            Dismiss Profile View
+        </button>
+    </div>
+</div>
+
+
+<!-- UPDATED LANDLORD LOGIC ENGINE WITH LOCALSTORAGE RETENTION SYSTEM -->
+<script>
+    const CURRENT_LANDLORD_ID = localStorage.getItem('ACTIVE_LANDLORD_ID') || "L1"; 
+    
+    // Core array that holds our merged listings
+    let activeProperties = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // 1. CHECK IF WE ALREADY HAVE SAVED PROPERTY UPDATES IN MEMORY
+        const localSavedData = localStorage.getItem(`SAVED_PROPERTIES_${CURRENT_LANDLORD_ID}`);
+        
+        if (localSavedData) {
+            // If memory exists, load it directly to skip file reading delays
+            activeProperties = JSON.parse(localSavedData);
+            renderTableMatrix();
+        } else {
+            // 2. IF MEMORY IS EMPTY, PULL THE BASELINE BLUEPRINTS FROM DATA.JSON
+            fetch('../data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const currentLandlord = data.landlords.find(l => l.id === CURRENT_LANDLORD_ID);
+                    if (currentLandlord) {
+                        document.querySelector('.username').innerText = currentLandlord.name;
+                    }
+
+                    // Isolate properties specific to this account configuration profile
+                    activeProperties = data.properties.filter(p => p.landlordId === CURRENT_LANDLORD_ID);
+                    
+                    // Save to local memory immediately so future alterations lock in safely
+                    saveToBrowserMemory();
+                    renderTableMatrix();
+                })
+                .catch(err => console.error("Database blueprint reading fault.", err));
+        }
+    });
+
+    // Helper command function to lock down properties inside browser memory strings
+    function saveToBrowserMemory() {
+        localStorage.setItem(`SAVED_PROPERTIES_${CURRENT_LANDLORD_ID}`, JSON.stringify(activeProperties));
+    }
+
+    // Renders the data table interface layout layers matching state indicators
+    function renderTableMatrix() {
+        const tableBody = document.querySelector('#inventory-table tbody');
+        tableBody.innerHTML = ''; 
+
+        // Update Stats Telemetry Counters dynamically
+        document.getElementById('stat-total').innerText = activeProperties.length;
+        document.getElementById('stat-active').innerText = activeProperties.filter(p => !p.status.includes('Vacant') && !p.status.includes('Offline')).length;
+
+        if (activeProperties.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-secondary);">No active listings.</td></tr>`;
+            return;
+        }
+
+        activeProperties.forEach((property, index) => {
+            const isOffline = property.status.includes('Offline');
+            const rowStyle = isOffline ? 'border-bottom: 1px solid var(--glass-border); opacity: 0.25;' : 'border-bottom: 1px solid var(--glass-border);';
+
+            tableBody.innerHTML += `
+                <tr id="property-row-${index}" style="${rowStyle}">
+                    <td class="prop-title" style="padding: 16px 12px; font-weight: 600;">${property.title}</td>
+                    <td style="padding: 16px 12px; color: var(--text-secondary);">${property.layout}</td>
+                    <td class="prop-price" style="padding: 16px 12px; font-weight: 600; color: var(--neon-cyan);">$${property.price}</td>
+                    <td style="padding: 16px 12px;"><span class="status-badge" style="color: ${property.statusColor}; font-weight: 600; font-size: 0.85rem;">● ${property.status}</span></td>
+                    <td style="padding: 16px 12px;">
+                        <a href="#profileModal" onclick="openProfileModal('${property.studentName}', '${property.studentNotes}')" style="color: var(--neon-cyan); font-weight: 500; text-decoration: none; border-bottom: 1px dashed var(--neon-cyan);">
+                            ${property.studentName}
+                        </a>
+                    </td>
+                    <td style="padding: 16px 12px; display: flex; gap: 8px; justify-content: center;">
+                        <button type="button" class="btn btn-secondary" onclick="updateListingAvailability(${index})" ${isOffline ? 'disabled' : ''}>Update</button>
+                        <button type="button" class="btn btn-danger" onclick="deactivateListing(${index})" ${isOffline ? 'disabled' : ''}>Deactivate</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // FORM CAPTURE GATEWAY: Injects new entries and saves them to memory permanently!
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        const titleInput = document.getElementById('hostel-name').value;
+        const layoutInput = document.getElementById('room-spec').value;
+        const priceInput = parseInt(document.getElementById('room-price').value);
+        const imagesCount = document.getElementById('property-photos').files.length;
+        const tourCount = document.getElementById('virtual-tour').files.length;
+
+        const newPropertyRecord = {
+            landlordId: CURRENT_LANDLORD_ID,
+            title: titleInput,
+            layout: layoutInput,
+            price: priceInput,
+            status: "Vacant (0/1)", 
+            statusColor: "var(--danger)",
+            studentName: "No Student Assigned",
+            studentNotes: `Live! Attached items: ${imagesCount} images, ${tourCount} tour loops.`
+        };
+
+        // 1. Add item to our tracking memory array
+        activeProperties.push(newPropertyRecord);
+
+        // 2. CRUCIAL CHANGE: Lock the updated array back into browser memory before re-rendering
+        saveToBrowserMemory();
+
+        // 3. Re-draw rows onto your screen layout layer
+        renderTableMatrix();
+
+        document.getElementById('listing-form').reset();
+        alert(`"${titleInput}" successfully deployed and saved locally!`);
+    }
+
+    // UPDATE LOGIC: Prices and updates are now saved and survive reloads
+    function updateListingAvailability(index) {
+        const property = activeProperties[index];
+        const newPrice = prompt(`Update semester price for ${property.title}:`, property.price);
+        
+        if (newPrice !== null && !isNaN(newPrice) && newPrice.trim() !== "") {
+            property.price = parseInt(newPrice);
+            const isOccupied = confirm("Is this room fully occupied? (OK for Filled, Cancel for Vacant)");
+            
+            property.status = isOccupied ? "Fully Allocated (2/2)" : "Vacant (0/1)";
+            property.statusColor = isOccupied ? "var(--success)" : "var(--danger)";
+
+            // Lock structural parameters and re-render
+            saveToBrowserMemory();
+            renderTableMatrix();
+            alert("Changes saved to persistent memory!");
+        }
+    }
+
+    // DEACTIVATE LOGIC: Deactivations are now saved and survive reloads
+    function deactivateListing(index) {
+        if (confirm(`Take "${activeProperties[index].title}" offline completely?`)) {
+            activeProperties[index].status = "Offline / Deactivated";
+            activeProperties[index].statusColor = "var(--text-secondary)";
+            
+            // Lock structural parameters and re-render
+            saveToBrowserMemory();
+            renderTableMatrix();
+            alert("Listing pulled offline.");
+        }
+    }
+
+    // Real-Time Table Filtering Core Logic
+    function filterTable() {
+        const query = document.getElementById('table-search').value.toLowerCase();
+        const rows = document.querySelectorAll('#inventory-table tbody tr');
+        rows.forEach(row => {
+            const titleElement = row.querySelector('.prop-title');
+            if (titleElement) {
+                const titleText = titleElement.innerText.toLowerCase();
+                row.style.display = titleText.includes(query) ? '' : 'none';
+            }
+        });
+    }
+
+    // Modal Control Methods
+    function openProfileModal(title, description) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalDescription').innerText = description;
+        document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function closeProfileModal(event) {
+        if(event.target.id === 'profileModal') {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+    }
+
+function openLandlordModal() {
+    document.getElementById('LandlordModal').style.display = 'flex';
+}
+
+function closeLandlordModal(event) {
+    if(event.target.id === 'LandlordModal') {
+        document.getElementById('LandlordModal').style.display = 'none';
+    }
+}
+
+function openLandlordModal() {
+    document.getElementById('landlordModal').style.display = 'flex';
+}
+
+function closeLandlordModal(event) {
+    if(event.target.id === 'landlordModal') {
+        document.getElementById('landlordModal').style.display = 'none';
+    }
+}
+
+
+</script>
+    
+
+</body>
+</html>
