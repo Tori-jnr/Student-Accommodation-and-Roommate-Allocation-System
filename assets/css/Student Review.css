@@ -1,0 +1,309 @@
+/* ==========================================================================
+   1. DESIGN SYSTEM VARIABLES & GLOBAL RESETS
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-dark-navy: #060b13;
+    --glass-panel: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --neon-cyan: #00f0ff;
+    --neon-blue: #0072ff;
+    --text-pure: #ffffff;
+    --text-secondary: #94a3b8;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --radius: 12px;
+}
+
+
+* {
+  box-sizing: border-box;
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: linear-gradient(rgba(6, 11, 19, 0.92), rgba(6, 11, 19, 0.92)), 
+                url('https://plus.unsplash.com/premium_photo-1738451201702-6099431434d9?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-pure);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* APP SHELL FRAMEWORK (SIDEBAR & CONTROLLER PANELS)*/
+.dashboard-shell { 
+    display: flex; 
+    width: 100%; 
+    min-height: 100vh;}
+
+.sidebar {
+  width: 80px; /* Reduced layout footprint */
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(35px) saturate(120%);
+    -webkit-backdrop-filter: blur(35px) saturate(120%);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 16px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Fluid expansion mechanics */
+
+}
+
+.sidebar .brand {
+  margin-bottom: 28px;
+}
+
+.sidebar .brand small {
+  color: var(--sidebar-muted);
+}
+
+.side-section {
+  margin: 22px 0 8px;
+  color: var(--sidebar-muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.side-nav {
+  display: grid;
+  gap: 5px;
+}
+
+.side-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  color: #d8e0ee;
+  font-weight: 600;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   3. SYSTEM APP BAR HEADER METRICS
+   ========================================================================== */
+.main {
+  min-width: 0;
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 30px;
+  border-bottom: 1px solid var(--border);
+  background: #ffffff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.brand-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.brand small {
+  display: block;
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.avatar {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-muted);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.page {
+  padding: 28px 30px 46px;
+}
+
+.page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title h1 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.page-title p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   4. LAYOUT SYSTEM (HORIZONTAL GRID ALIGNMENT)
+   ========================================================================== */
+.three-column {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Matches reviews display schema */
+}
+
+.panel,
+.match-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  padding: 20px;
+}
+
+/* Concrete layout adjustments specifically targeting student statement card blocks */
+.match-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+/* Fix: Explicitly force Lucide icons to stay visible and unhidden */
+.nav-links a svg.lucide {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  display: inline-block !important;
+  
+  /* Modern text-emoji sizing and baseline properties */
+  height: 1.2em !important;      
+  width: 1.2em !important;       
+  vertical-align: -0.18em !important; 
+  stroke: currentColor !important; /* Dynamically inherits text colors */
+  stroke-width: 2px !important;  
+  flex-shrink: 0 !important;
+}
+
+/* Fix: Ensure sidebar anchors use Flexbox layout to align icons next to text */
+.nav-links a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+/* ==========================================================================
+GLASSMORPHIC PROFILE MODAL SYSTEM
+========================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(6, 11, 19, 0.85) !important; /* Matches your dashboard background */
+  backdrop-filter: blur(12px) !important;       /* Clean translucent blur */
+  -webkit-backdrop-filter: blur(12px) !important;
+  z-index: 9999 !important;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.modal-panel {
+  max-width: 420px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  padding: 28px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.modal-panel h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+}
+
+.modal-field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-field label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.modal-field span {
+  font-size: 1rem;
+  color: var(--text-pure);
+  font-weight: 500;
+}
+
+.cyan-text-glow {
+  color: var(--neon-cyan) !important;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4) !important;
+}
