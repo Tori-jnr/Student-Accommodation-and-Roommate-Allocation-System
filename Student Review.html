@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Sentiment Engine - Roomly.</title>
+    <link rel="stylesheet" href="Dashboard.css">
+</head>
+<body>
+
+    <div class="dashboard-shell">
+        
+        <!-- COMPLETE INLINE SVG SIDEBAR SYSTEM -->
+<aside class="sidebar">
+    <div class="logo">
+        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+    </div>
+    
+    <div class="my-text">
+        <div>
+            <span class="nav-heading">Operations Hub</span>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="active">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    <span>Inventory & Listings</span>
+                </a>
+                <a href="student review.html">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>Student Reviews</span>
+                </a>
+                            </nav>
+        </div>
+        
+        <div>
+            <span class="nav-heading">System Parameters</span>
+            <nav class="nav-links">
+                <a href="#">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Security Profiles</span>
+                </a>
+                <a href="../Authentication/login.html" class="logout-link" onclick="localStorage.clear(); window.location.reload();">
+                    <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+
+        <!-- MAIN INTERACTIVE MONITOR -->
+        <main class="main-content">
+            
+            <!-- APPLICATION CONTROL HEADER -->
+            <header class="top-header">
+                <div class="welcome-text">
+                    <h1>Student Review Matrix</h1>
+                    <p>Audit community feedback telemetry, manage response parameters, and monitor your landlord reputation status.</p>
+                </div>
+                <div class="user-profile-widget" onclick="openLandlordModal()" style="cursor: pointer;">
+    <div class="profile-container">M</div>
+    <span class="username">Property Manager</span>
+</div>
+
+            </header>
+
+            <!-- REPUTATION PERFORMANCE STATE BLOCKS -->
+            <section class="stats-row">
+                <div class="stat-card">
+                    <h3>Aggregate Rating</h3>
+                    <p class="cyan-glow">4.8<span style="font-size: 1rem; color: var(--text-secondary);"> / 5.0</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Logged Reviews</h3>
+                    <p class="blue-glow">142</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Action Required</h3>
+                    <p class="yellow-glow">3</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Reputation Grade</h3>
+                    <p class="purple-glow" style="font-size: 1.5rem; margin-top: 4px;">Elite Tier</p>
+                </div>
+            </section>
+
+            <!-- SPLIT CONTROL INTERFACE MATRIX -->
+            <div class="content-grid">
+                
+                <!-- PRIMARY LIVE TELEMETRY FEED PANEL -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>Incoming Feedback Feed</h2>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px; display: flex; gap: 12px; align-items: center;">
+                        <input type="text" placeholder="Search by student or hostel name..." style="max-width: 300px;">
+                        <select style="max-width: 160px;">
+                            <option value="all">All Ratings</option>
+                            <option value="5">5 Stars</option>
+                            <option value="critical">Critical Only</option>
+                        </select>
+                    </div>
+
+                    <!-- REVIEWS CHRONOLOGICAL THREAD -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <!-- Review Card A -->
+                        <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; transition: transform 0.2s ease;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-pure);">Marcus Vance</h4>
+                                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Resident: Greenview Hall - Rm 12</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="color: var(--neon-cyan); font-weight: 700; letter-spacing: 1px;">★★★★★</span>
+                                    <small style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">2 hours ago</small>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                                "The roommate assignment matching system worked brilliantly. My paired roommate matches my exact study style criteria perfectly. The property supervisor was highly responsive during move-in verification checked sequences."
+                            </p>
+                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                <button class="btn btn-secondary" onclick="openResponseModal('Marcus Vance')">Dispatch Response</button>
+                            </div>
+                        </div>
+
+                        <!-- Review Card B -->
+                        <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; transition: transform 0.2s ease;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-pure);">Elena Rostova</h4>
+                                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Former Resident: Pinecrest Lodge - Rm 04</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="color: var(--warning); font-weight: 700; letter-spacing: 1px;">★★★★☆</span>
+                                    <small style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">Yesterday</small>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                                "Excellent infrastructure parameters and very stable web infrastructure. Minor latency encountered during media uploads on the portal dashboard framework during validation checks, but fixed quickly."
+                            </p>
+                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-left: 2px solid var(--neon-cyan); border-radius: 4px; margin-bottom: 16px;">
+                                <small style="display: block; font-weight: 600; color: var(--neon-cyan); margin-bottom: 4px;">Your Official Response:</small>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary);">"Thank you for the analytics telemetry feedback, Elena. We optimized our core portal engine bandwidth to solve that upload constraint."</p>
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                <button class="btn btn-secondary" style="opacity: 0.5; cursor: not-allowed;" disabled>Response Live</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECONDARY TELEMETRY PANEL: GLOBAL POLICIES & QUICK ALERTS -->
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    
+                    <!-- REPUTATION ACTIONS CONTROL BLOCK -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Reputation Shield Policy</h2>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                            Reputation grade updates automatically every 24 hours based on community metrics and verified parameter validation checks.
+                        </p>
+                        
+
+                    <!-- NOTIFICATION SYSTEM INSIGHTS -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2>Critical Alerts Monitor</h2>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div style="padding: 14px; background: rgba(245, 158, 11, 0.05); border-left: 3px solid var(--warning); border-radius: 6px; font-size: 0.85rem; line-height: 1.4;">
+
+<!-- LANDLORD PROFILE MODAL LAYER -->
+<div id="landlordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;" onclick="closeLandlordModal(event)">
+    <div class="panel" style="max-width: 400px; width: 100%; margin: 20px; border: 1px solid var(--glass-border); padding: 24px;">
+        <h2 style="margin-bottom: 16px;">Landlord Account Profile</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 8px;"><strong>Role:</strong> Verified Accommodation Host</p>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;"><strong>Operational Center:</strong> Landlord Operations Dashboard</p>
+        <button class="btn btn-secondary" onclick="document.getElementById('landlordModal').style.display='none'">Close Profile</button>
+    </div>
+</div>
+
+<!-- LANDLORD PROFILE MODAL CONTAINER -->
+<div id="landlordModal" class="modal-overlay" onclick="closeLandlordModal(event)">
+    <div class="modal-panel">
+        <h2>Landlord Account Node</h2>
+        
+        <div class="modal-field">
+            <label>Verified Host Profile</label>
+            <span class="username cyan-text-glow">Property Manager</span>
+        </div>
+        
+        <div class="modal-field">
+            <label>Security Clearance Role</label>
+            <span>Accommodation Matrix Administrator</span>
+        </div>
+        
+        <div class="modal-field" style="margin-bottom: 28px;">
+            <label>Operational Hub Node</label>
+            <span style="color: var(--neon-blue);">Roomly Landlord Suite Alpha</span>
+        </div>
+        
+        <button class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="document.getElementById('landlordModal').style.display='none'">
+            Dismiss Profile View
+        </button>
+    </div>
+</div>
+
+
+<script>
+function openLandlordModal() {
+    document.getElementById('landlordModal').style.display = 'flex';
+}
+
+function closeLandlordModal(event) {
+    if(event.target.id === 'landlordModal') {
+        document.getElementById('landlordModal').style.display = 'none';
+    }
+}
+
+function openLandlordModal() {
+    document.getElementById('landlordModal').style.display = 'flex';
+}
+
+function closeLandlordModal(event) {
+    if(event.target.id === 'landlordModal') {
+        document.getElementById('landlordModal').style.display = 'none';
+    }
+}
+
+
+</script>
+</body>
+</html>
+
