@@ -8,20 +8,19 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="Login.html">
+    <a class="brand" href="landingpage.html">
       <span class="brand-mark">R</span>
       <span>Roomly <small>Accommodation and roommate allocation</small></span>
     </a>
     <nav class="nav-pills" aria-label="Main navigation">
       <a class="active" href="Login.html">Login</a>
-      <a href="register.html">Register</a>
-      <a href="student/hostels.html">Hostels</a>
+      <a href="register.php">Register</a>
     </nav>
   </header>
 
   <main class="auth-page">
     <section class="auth-panel">
-      <form class="auth-card" data-login-form>
+      <form action="login_process.php" method="POST" class="auth-card" data-login-form>
         <div style="text-align: center;">
           <h1>Welcome Back!</h1>
           <p>We're glad to see you again.</p>
@@ -30,11 +29,11 @@
         <div class="form-grid" style="margin-top: 24px;">
           <div class="field-full">
             <label for="email">Email address</label>
-            <input id="email" type="email" placeholder="email@example.com" required>
+<input id="email" name="email" type="email" placeholder="student@example.com" required>
           </div>
           <div class="field-full">
             <label for="password">Password</label>
-            <input id="password" type="password" placeholder="Enter password" required>
+            <input id="password" name="password" type="password" placeholder="Enter password" required>
           </div>
           <div class="field-full">
             <label for="role">Role</label>
@@ -48,7 +47,7 @@
 
         <div class="button-row" style="margin-top: 22px;">
           <button class="button" type="submit">Login</button>
-          <a class="button secondary" href="register.html">Create account</a>
+          <a class="button secondary" href="register.php">Create account</a>
         </div>
       </form>
     </section>
