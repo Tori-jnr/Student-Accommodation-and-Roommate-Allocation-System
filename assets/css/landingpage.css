@@ -1,0 +1,64 @@
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-dark-navy: #060b13;
+      --neon-cyan: #00f0ff;
+      --neon-blue: #0072ff;
+      --glass-white: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-pure: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.65);
+      --transition-fluid: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-dark-navy);
+      color: var(--text-pure);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Ambient background glows */
+    .glow-bg {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, rgba(0, 114, 255, 0.01) 70%, transparent 100%);
+      top: -10%;
+      right: -10%;
+      z-index: 1;
+      pointer-events: none;
+      filter: blur(80px);
+    }
+
+    /* Backing dynamic wallpaper styles */
+    .bg-wallpaper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.25) contrast(1.1);
+      transition: background-image 0.8s ease-in-out;
+    }
+
+    /* Glass Panels */
+    .glass-panel {
+      background: rgba(6, 11, 19, 0.75);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
