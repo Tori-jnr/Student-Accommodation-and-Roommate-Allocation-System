@@ -1,0 +1,94 @@
+/* ==========================================================================
+   ROOMLY PRO: Admin Identity Profile Registry Module Stylesheet
+   ========================================================================== */
+@import url('https://googleapis.com');
+
+:root {
+    --bg-dark-navy: #060b13;
+    --glass-panel: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --neon-cyan: #00f0ff;
+    --neon-blue: #0072ff;
+    --text-pure: #ffffff;
+    --text-secondary: #94a3b8;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+body {
+    background: linear-gradient(rgba(6, 11, 19, 0.92), rgba(6, 11, 19, 0.92)), 
+                url('https://plus.unsplash.com/premium_photo-1738451201702-6099431434d9?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-pure);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* APP SHELL STRUCTURES MAPPINGS */
+.dashboard-shell { display: flex; width: 100%; min-height: 100vh; }
+.main { flex: 1; padding: 40px; overflow-y: auto; }
+
+/* HOVER COLLAPSED NAVIGATION SYSTEM */
+.sidebar {
+    width: 80px; background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(35px) saturate(120%);
+    -webkit-backdrop-filter: blur(35px) saturate(120%); border-right: 1px solid var(--glass-border);
+    display: flex; flex-direction: column; padding: 40px 16px; height: 100vh; position: sticky; top: 0; z-index: 100;
+    overflow: hidden; white-space: nowrap; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+.sidebar:hover { width: 280px; padding: 40px 24px; box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5); }
+.brand { font-size: 1.6rem; font-weight: 800; color: var(--text-pure); margin-bottom: 30px; letter-spacing: -1px; line-height: 1.2; display: block; }
+.brand span:not(.dot), .brand small, .side-section, .side-nav a span { opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+.sidebar:hover .brand span:not(.dot), .sidebar:hover .brand small, .sidebar:hover .side-section, .sidebar:hover .side-nav a span { opacity: 1; pointer-events: auto; transition-delay: 0.15s; }
+.side-section { display: block !important; color: #38bdf8 !important; font-weight: 700 !important; font-size: 0.75rem !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; margin-top: 25px !important; margin-bottom: 12px !important; }
+
+/* SIDEBAR BUTTON MARKS LINK ROSTERS */
+.side-nav { display: flex; flex-direction: column; gap: 6px; }
+.side-nav a { color: var(--text-secondary); text-decoration: none; padding: 14px; border-radius: var(--radius); font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 16px; transition: all 0.3s ease; }
+.sidebar:hover .side-nav a { padding: 14px 18px; }
+.side-nav a:hover, .side-nav a.active { background: rgba(255, 255, 255, 0.05); color: var(--text-pure); }
+.side-nav a.active { border-left: 3px solid var(--neon-cyan); background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent); }
+.sidebar .side-nav a svg.sidebar-icon { display: inline-block !important; fill: none !important; stroke: var(--text-secondary) !important; stroke-width: 2px !important; stroke-linecap: round !important; stroke-linejoin: round !important; height: 1.2em !important; width: 1.2em !important; min-width: 24px !important; flex-shrink: 0 !important; transition: stroke 0.2s ease !important; }
+.sidebar .side-nav a.active svg.sidebar-icon { stroke: var(--neon-cyan) !important; }
+.sidebar .side-nav a:hover svg.sidebar-icon { stroke: var(--text-pure) !important; }
+.logout-link { color: var(--text-secondary) !important; margin-top: auto; }
+.logout-link:hover { background: rgba(239, 68, 68, 0.1) !important; color: var(--danger) !important; }
+
+/* DESK HEADER WORKSPACE CODES */
+.main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
+.page-title h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.5px; }
+.page-title p { color: var(--text-secondary); font-size: 0.95rem; }
+.user-pill { background: var(--glass-panel); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(10px); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--neon-cyan); color: var(--bg-dark-navy); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+
+/* OPTIMIZED USER CONTROL PANEL WORKSPACE */
+.dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+.panel { background: var(--glass-panel); padding: 30px; border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(20px); }
+.section-title { margin-bottom: 24px; }
+.panel h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; color: var(--text-pure); }
+
+/* IDENTITY MATRIX DATA GRID TABLES */
+.table-wrap { width: 100%; border-collapse: collapse; text-align: left; }
+.table-wrap th { padding: 14px 12px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); border-bottom: 1px solid var(--glass-border); }
+.table-wrap td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); vertical-align: middle; }
+.table-wrap tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+/* SOFT NEON ROLE HIGHLIGHT SHIELDS */
+.table-wrap td span[style*="color:var(--neon-blue)"],
+.table-wrap td span[style*="color: var(--neon-blue)"] {
+    text-shadow: 0 0 10px rgba(0, 114, 255, 0.4);
+}
+.table-wrap td span[style*="color:var(--warning)"],
+.table-wrap td span[style*="color: var(--warning)"] {
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+/* MODIFICATION ACCESS ACTION BUTTONS */
+.button { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.button.secondary { background: rgba(255, 255, 255, 0.05); border-color: var(--glass-border); color: var(--text-pure); }
+.button.secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--neon-cyan); }
