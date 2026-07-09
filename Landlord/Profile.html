@@ -165,38 +165,61 @@
         });
 
         // 3. Save Form changes to localStorage
-        function saveProfile(event) {
-            event.preventDefault();
+      
+    function saveProfile(event) {
+    event.preventDefault();
 
-            const name = document.getElementById('Landlord-name').value;
-            const email = document.getElementById('Landlord-email').value;
-            const phone = document.getElementById('Landlord-phone').value;
-            const university = document.getElementById('Landlord-Hostel').value;
-            const bio = document.getElementById('Landlord-bio').value;
+    const currentLandlordId = localStorage.getItem('ACTIVE_LANDLORD_ID') || 'L1';
+    const name = document.getElementById('Landlord-name').value;
+    const email = document.getElementById('Landlord-email').value; // HTML input says student-email
+    const phone = document.getElementById('Landlord-phone').value; // HTML input says student-phone
+    const bio = document.getElementById('Landlord-bio').value;
 
+    const dataPacket = new FormData();
+    dataPacket.append('landlordId', currentLandlordId);
+    dataPacket.append('name', name);
+    dataPacket.append('email', email);
+    dataPacket.append('phone', phone);
+    dataPacket.append('bio', bio);
+
+    fetch('http://localhost/Roomly/Student-Accommodation-and-Roommate-Allocation-System/update_profile.php', {
+        method: 'POST',
+        body: dataPacket
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.status === 'success') {
+            // Update local memory to keep UI state clean
             localStorage.setItem('Landlord-name', name);
             localStorage.setItem('Landlord-email', email);
             localStorage.setItem('Landlord-phone', phone);
-            localStorage.setItem('Landlord-Hostel', hostel);
             localStorage.setItem('Landlord-bio', bio);
 
-            // Dynamically update visual preview panel
+            // Update previews dynamically
             document.getElementById('preview-name').innerText = name;
             document.getElementById('preview-bio').innerText = bio;
 
-            // Simple visual indicator of saving success
+            // Success Button Animation
             const saveBtn = document.querySelector('.action-btn');
             const originalHTML = saveBtn.innerHTML;
-            saveBtn.innerHTML = `<i data-lucide="check"></i> Profile Saved!`;
+            saveBtn.innerHTML = `<i data-lucide="check"></i> Synchronized Live!`;
             saveBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-            lucide.createIcons();
+            if(window.lucide) lucide.createIcons();
 
             setTimeout(() => {
                 saveBtn.innerHTML = originalHTML;
                 saveBtn.style.background = '';
-                lucide.createIcons();
+                if(window.lucide) lucide.createIcons();
             }, 2000);
+        } else {
+            alert("Profile sync failed: " + result.message);
         }
+    })
+    .catch(err => {
+        console.error("Profile connection breakdown:", err);
+        alert("Server connection fault active.");
+    });
+}
     </script>
 </body>
 </html>

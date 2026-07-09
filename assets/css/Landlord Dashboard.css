@@ -1,7 +1,7 @@
 /* ==========================================================================
    ROOMLY PRO: High-Performance Cyber Glassmorphic Theme (Landlord Edition)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://googleapis.com');
 
 :root {
     --bg-dark-navy: #060b13;
@@ -34,12 +34,15 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* APP SHELL FRAMEWORK (SIDEBAR & CONTROLLER PANELS)*/
+/* ==========================================================================
+   APP SHELL FRAMEWORK (SIDEBAR & CONTROLLER PANELS)
+   ========================================================================== */
 .dashboard-shell { 
     display: flex; 
     width: 100%; 
@@ -47,7 +50,7 @@ a {
 }
 
 .sidebar {
-    width: 80px; /* Reduced layout footprint */
+    width: 80px; 
     background: rgba(255, 255, 255, 0.01);
     backdrop-filter: blur(35px) saturate(120%);
     -webkit-backdrop-filter: blur(35px) saturate(120%);
@@ -69,20 +72,19 @@ a {
     padding: 40px 24px;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
 }
+
 .sidebar .nav-heading {
   display: block !important;
-  color: #38bdf8 !important;   /* Force the bright neon sky-blue color */
-  font-weight: 700 !important;  /* Make the text thick and bold */
-  font-size: 0.75rem !important;/* Keeps the font clean and small */
-  text-transform: uppercase !important; /* Forces CAPITAL LETTERS like the dashboard */
-  letter-spacing: 0.05em !important;    /* Adds slight space between letters */
-  margin-top: 20px !important;  /* Pushes it down away from elements above it */
-  margin-bottom: 12px !important;/* Creates space before the links below it */
-  opacity: 1 !important;        /* Guarantees it doesn't stay hidden or faded out */
+  color: #38bdf8 !important;   
+  font-weight: 700 !important;  
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important; 
+  letter-spacing: 0.05em !important;    
+  margin-top: 20px !important;  
+  margin-bottom: 12px !important;
+  opacity: 1 !important;        
 }
 
-
-/* Elegant brand header logo logic */
 .logo { 
     font-size: 1.6rem;
     font-weight: 800;
@@ -92,7 +94,6 @@ a {
     line-height: 1.2;
 }
 
-/* Hide branding text parameters until active expansion trigger fires */
 .logo span.logo-text, .logo small, .nav-heading, .nav-links a span {
     opacity: 0;
     transition: opacity 0.2s ease;
@@ -108,7 +109,12 @@ a {
     transition-delay: 0.15s;
 }
 
-/* Icon layout tracking alignments */
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .nav-links a { 
     color: var(--text-secondary); 
     text-decoration: none; 
@@ -122,28 +128,48 @@ a {
     transition: all 0.3s ease;
 }
 
+
+.sidebar .nav-links a svg.sidebar-icon {
+    display: inline-block !important;
+    opacity: 1 !important;                 
+    visibility: visible !important;
+    fill: none !important;                 
+    stroke: var(--text-secondary) !important; 
+    stroke-width: 2px !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    height: 1.2em !important;              
+    width: 1.2em !important;               
+    flex-shrink: 0 !important;             
+    transition: stroke 0.2s ease !important;
+}
+
 .sidebar:hover .nav-links a {
     padding: 14px 18px;
 }
 
-/* Icon visual boundaries anchor */
+.nav-links a:hover, .nav-links a.active {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-pure);
+}
+
 .nav-icon {
     font-size: 1.25rem;
     min-width: 24px;
-    text-align: center;
-    display: inline-block;
+    height: 24px; /* Ensure a consistent height box boundary */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ==========================================================================
-   OPTIMIZED PROPORTIONS LAYOUT MATRIX
-   ========================================================================== */
-.content-grid { 
-    display: grid; 
-    grid-template-columns: 1.2fr 1fr; /* Form flex box optimized from 2fr/1fr to 1.2fr/1fr */
-    gap: 30px; 
+.nav-links a svg,
+.nav-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+    max-width: 20px;
+    max-height: 20px;
+    display: block;
 }
-
-
 .logout-link {
     color: var(--text-secondary) !important;
     margin-top: auto;
@@ -154,9 +180,9 @@ a {
     color: var(--danger) !important;
 }
 
-/* =========================================
+/* ==========================================================================
    MAIN CONTENT AREA
-   ========================================= */
+   ========================================================================== */
 .main-content { 
     flex: 1; 
     padding: 40px; 
@@ -219,9 +245,9 @@ a {
     font-weight: 600;
 }
 
-/* =========================================
+/* ==========================================================================
    ANALYTICS STATS SECTION
-   ========================================= */
+   ========================================================================== */
 .stats-row { 
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
@@ -267,9 +293,9 @@ a {
     font-weight: 700;
 }
 
-/* =========================================
+/* ==========================================================================
    GRID MATRIX LAYOUT
-   ========================================= */
+   ========================================================================== */
 .content-grid { 
     display: grid; 
     grid-template-columns: 2fr 1fr; 
@@ -299,7 +325,7 @@ a {
 }
 
 /* Interactive Components inside glass panels */
-input, select {
+input, select, textarea {
     width: 100%;
     padding: 12px 16px;
     background: rgba(0, 0, 0, 0.25);
@@ -311,7 +337,7 @@ input, select {
     transition: all 0.2s ease;
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
     border-color: var(--neon-cyan);
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
 }
@@ -326,13 +352,27 @@ label {
     margin-bottom: 6px;
 }
 
-/* Cyber Data Tables */
+/* ==========================================================================
+   CYBER DATA TABLES
+   ========================================================================== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
 .data-table th {
+    padding: 12px;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
     border-bottom: 1px solid var(--glass-border);
+}
+
+.data-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .data-table tr {
@@ -352,20 +392,20 @@ label {
     cursor: pointer;
     border: 1px solid transparent;
     transition: all 0.2s ease;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
-.btn-primary {   
+.btn-primary {
     background: linear-gradient(135deg, var(--neon-blue), #0044ff);
     color: var(--text-pure);
-    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.2);
 }
 
 .btn-primary:hover {
+    box-shadow: 0 0 15px rgba(0, 114, 255, 0.4);
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
 }
 
 .btn-secondary {
@@ -380,110 +420,10 @@ label {
 
 .btn-danger {
     background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.2);
     color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .btn-danger:hover {
     background: rgba(239, 68, 68, 0.2);
 }
-
-/* Glass Modal Structure */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(6, 11, 19, 0.8);
-    backdrop-filter: blur(20px);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    padding: 32px;
-    border-radius: 20px;
-    max-width: 460px;
-    width: 90%;
-}
-.my-text {
-      font-size: 24px;       /* Scales text and icon together */
-      color: #2563eb;        /* Colors text and icon together */
-    }
-
-    .my-text svg.lucide {
-      display: inline-block;
-      height: 1em;           /* Matches text height */
-      width: 1em;            /* Keeps icon square */
-      vertical-align: -0.15em; /* Aligns icon with text baseline */
-      stroke: currentColor;  /* Forces icon to inherit the text color */
-    }
-/* 1. Force the sidebar links to adopt an aligned layout grid */
-.nav-links a {
-  display: flex !important;
-  align-items: center !important;
-  gap: 16px !important; /* Spacing between icon and sidebar text */
-}
-
-/* 2. Configure the text-emoji layout dimensions */
-.nav-emoji {
-  display: inline-block !important;
-  width: 1.2em !important;
-  height: 1.2em !important;
-  flex-shrink: 0 !important;
-  background-color: currentColor !important; /* Automatically inherits active colors */
-  
-  /* Critical override to bypass the opacity: 0 sidebar-hover bug */
-  opacity: 1 !important; 
-  pointer-events: auto !important;
-  
-  /* Mask settings */
-  -webkit-mask-size: contain !important;
-  mask-size: contain !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-}
-/* ==========================================================================
-INLINE VECTOR INTERACTION DESIGN STYLES
-========================================================================== */
-
-/* Align your link layouts using flexbox elements */
-.sidebar .nav-links a {
-  display: flex !important;
-  align-items: center !important;
-  gap: 16px !important;
-}
-
-/* Format vectors to look and scale precisely like text emojis */
-.sidebar .nav-links a svg.sidebar-icon {
-  display: inline-block !important;
-  opacity: 1 !important;                 /* Overrides hidden text opacity */
-  visibility: visible !important;
-  fill: none !important;                 /* Keeps inside lines transparent */
-  stroke: var(--text-secondary) !important; /* Uses secondary link gray */
-  stroke-width: 2px !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-  height: 1.2em !important;              /* Perfectly matches font text size */
-  width: 1.2em !important;               /* Keeps element layout square */
-  flex-shrink: 0 !important;             /* Prevents flex compression box errors */
-  transition: stroke 0.2s ease !important;
-}
-
-/* Match colors dynamically with your glassmorphic interface hover states */
-.sidebar .nav-links a.active svg.sidebar-icon {
-  stroke: var(--neon-cyan) !important;    /* Active link lights up cyan */
-}
-
-.sidebar .nav-links a:hover svg.sidebar-icon {
-  stroke: var(--text-pure) !important;     /* Hover state lights up pure white */
-}
-
