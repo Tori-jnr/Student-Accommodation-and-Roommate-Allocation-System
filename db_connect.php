@@ -1,8 +1,8 @@
 <?php
 
-$conn = mysqli_connect('localhost', 'root', '', 'roomly_db');
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 
-if (!$conn) {
-    die('Database connection failed: ' . mysqli_connect_error());
+if ($conn->connect_error) {
+    die("Database connection failed: " . $conn->connect_error);
 }
 ?>

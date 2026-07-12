@@ -2,11 +2,7 @@
 session_start();
 
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'roomly_db');
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once "db_connect.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize inputs
@@ -102,7 +98,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 }
     if ($stmt->execute()) {
         $_SESSION['success'] = "Registration successful! You can now log in.";
-        header("Location: Login.html");
+        header("Location: Login.php");
         exit();
     } else {
         $_SESSION['error'] = "Database error: " . $stmt->error;

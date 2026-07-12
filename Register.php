@@ -15,7 +15,7 @@
       <span>Roomly <small>Accommodation and roommate allocation</small></span>
     </a>
     <nav class="nav-pills" aria-label="Main navigation">
-      <a href="Login.html">Login</a>
+      <a href="Login.php">Login</a>
       <a class="active" href="Register.php">Register</a>
     </nav>
   </header>
@@ -61,8 +61,8 @@
             <label for="gender">Gender</label>
             <select id="gender" name="gender" required>
               <option value="">Select gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
             </select>
           </div>
           <div class="field">
@@ -72,12 +72,13 @@
           <div class="field">
             <label for="confirm-password">Confirm password</label>
             <input id="confirm-password" type="password" name="confirm_password" placeholder="Confirm password" required>
-          </div>
+          <div id="password-message" class="password-message"></div>
+        </div>
         </div>
 
         <div class="button-row" style="margin-top: 22px;">
           <button class="button" type="submit">Sign up</button>
-          <a class="button secondary" href="Login.html">Back to login</a>
+          <a class="button secondary" href="Login.php">Back to login</a>
         </div>
       </form>
     </section>
@@ -112,6 +113,47 @@
     </section>
   </main>
 
-  <script src="assets/js/app.js"></script>
+<script>
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirm-password");
+const message = document.getElementById("password-message");
+const form = document.querySelector(".auth-card");
+
+function checkPasswords() {
+
+    if (confirmPassword.value === "") {
+        message.textContent = "";
+        message.className = "password-message";
+        return;
+    }
+
+    if (password.value === confirmPassword.value) {
+        message.textContent = "✓ Passwords match";
+        message.className = "password-message success";
+    } else {
+        message.textContent = "✗ Passwords do not match";
+        message.className = "password-message error";
+    }
+}
+
+password.addEventListener("input", checkPasswords);
+confirmPassword.addEventListener("input", checkPasswords);
+
+form.addEventListener("submit", function (e) {
+
+    if (password.value !== confirmPassword.value) {
+
+        e.preventDefault();
+
+        message.textContent = "✗ Passwords do not match";
+        message.className = "password-message error";
+
+        confirmPassword.focus();
+    }
+
+});
+
+</script>
+ 
 </body>
 </html>
