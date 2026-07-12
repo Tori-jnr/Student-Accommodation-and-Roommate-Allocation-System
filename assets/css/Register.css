@@ -1,6 +1,4 @@
-/* ==========================================================================
-   IMPORTS & SYSTEM DESIGN TOKENS (Cyber Teal & Deep Navy)
-   ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -30,9 +28,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ==========================================================================
-   1. CYBERPUNK GRADIENT BACKGROUND OVERLAY
-   ========================================================================== */
+
 .auth-page {
   flex: 1;
   display: flex;
@@ -50,9 +46,7 @@ body {
   background-position: center;
 }
 
-/* ==========================================================================
-   2. GLASSMORPHIC TOP NAVIGATION BAR
-   ========================================================================== */
+
 .topbar {
   background: rgba(6, 11, 19, 0.6);
   backdrop-filter: blur(12px);
@@ -340,4 +334,17 @@ body {
   .auth-visual {
     display: none; /* Hide visual board on small screens to save space */
   }
+}
+.password-message{
+    margin-top:6px;
+    font-size:0.9rem;
+    font-weight:500;
+}
+
+.password-message.success{
+    color:#2e7d32;
+}
+
+.password-message.error{
+    color:#d32f2f;
 }

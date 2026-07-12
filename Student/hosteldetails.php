@@ -20,11 +20,24 @@ if (!isset($_GET['id'])) {
 
 $hostel_id = (int)$_GET['id'];
 
-$sql = "SELECT h.*, r.room_type, r.price, r.status
-        FROM hostels h
-        JOIN rooms r ON h.hostel_id = r.hostel_id
-        WHERE h.hostel_id = $hostel_id
-        LIMIT 1";
+$sql = "
+SELECT
+    h.*,
+    r.room_type,
+    r.price,
+    r.status,
+    r.amenities,
+    l.full_name,
+    l.phone,
+    l.email
+FROM hostels h
+JOIN rooms r
+    ON h.hostel_id = r.hostel_id
+LEFT JOIN landlords l
+    ON h.landlord_id = l.landlord_id
+WHERE h.hostel_id = $hostel_id
+LIMIT 1
+";
 
 $result = mysqli_query($conn, $sql);
 
@@ -168,16 +181,32 @@ $student_id,
                   href="virtualtour.php?id=<?php echo $row['hostel_id']; ?>">
                   Open Virtual Tour
               </a>
-              <a class="button" href="contactlandlord.php" data-contact-link>Contact landlord</a>
+              
             </div>
 
             <hr class="divider">
 
             <div class="timeline">
               <div class="timeline-item">
-                <strong>Landlord</strong>
-                <span class="muted" data-landlord><?php echo htmlspecialchars($row['landlord']); ?></span>
-              </div>
+    <strong>Landlord</strong>
+    <span class="muted">
+        <?php echo htmlspecialchars($row['full_name']); ?>
+    </span>
+</div>
+
+<div class="timeline-item">
+    <strong>Phone</strong>
+    <span class="muted">
+        <?php echo htmlspecialchars($row['phone']); ?>
+    </span>
+</div>
+
+<div class="timeline-item">
+    <strong>Email</strong>
+    <span class="muted">
+        <?php echo htmlspecialchars($row['email']); ?>
+    </span>
+</div>
               <div class="timeline-item">
                 <strong>Amenities</strong>
                 <span class="muted" data-amenities><?php echo htmlspecialchars($row['amenities']); ?></span>

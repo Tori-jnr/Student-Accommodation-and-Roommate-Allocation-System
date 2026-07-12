@@ -16,6 +16,7 @@ if ($conn->connect_error) {
 // Get the REAL logged-in student's ID from the session!
 $student_id = $_SESSION['student_id']; 
 
+$saved = false;
 // 1. IF THE USER CLICKS "SAVE CHANGES" (Process the form)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_name = $conn->real_escape_string($_POST['student_name']);
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $update_sql = "UPDATE students SET full_name='$new_name', email='$new_email', phone='$new_phone', university='$new_univ', bio='$new_bio' WHERE student_id='$student_id'";
     $conn->query($update_sql);
+    $saved = true;
 }
 
 // 2. FETCH LATEST DATA TO DISPLAY ON SCREEN
@@ -163,7 +165,7 @@ if (!empty($full_name)) {
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="action-btn">
+                            <button type="submit" class="action-btn" id="save-btn">
                                 <i data-lucide="save"></i> Save Changes
                             </button>
                         </div>
@@ -211,6 +213,21 @@ if (!empty($full_name)) {
                 reader.readAsDataURL(file);
             }
         });
+     <?php if($saved): ?>
+const saveBtn = document.getElementById("save-btn");
+
+saveBtn.style.background = "#22c55e";
+saveBtn.style.borderColor = "#22c55e";
+saveBtn.innerHTML = '<i data-lucide="check"></i> Saved!';
+lucide.createIcons();
+
+setTimeout(() => {
+    saveBtn.innerHTML = '<i data-lucide="save"></i> Save Changes';
+    saveBtn.style.background = "";
+    saveBtn.style.borderColor = "";
+    lucide.createIcons();
+}, 2500);
+<?php endif; ?>   
     </script>
 </body>
 </html>
