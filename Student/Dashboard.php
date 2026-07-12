@@ -7,8 +7,20 @@ if (!isset($_SESSION['student_id'])) {
     header("Location: ../Login.php");
     exit();
 }
-
 $student_id = $_SESSION['student_id'];
+
+// Get the logged-in student's best roommate match
+ $bestMatch = 0; $stmt = $conn->prepare(" SELECT MAX(match_percentage) AS best_match FROM roommate_matches WHERE student_id = ? "); 
+ $stmt->bind_param("i", $_SESSION['student_id']);
+  $stmt->execute();
+   $result = $stmt->get_result(); 
+   if ($row = $result->fetch_assoc()) { if ($row['best_match'] !== null) { $bestMatch = round($row['best_match']);
+    } 
+    }
+    $stmt->close();
+
+
+
 //profile fetching
 $stmt = mysqli_prepare($conn,
     "SELECT full_name, profile_pic
@@ -166,7 +178,7 @@ $activity_log = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
                     <div class="stat-icon purple-glow"><i data-lucide="heart"></i></div>
                     <div>
                         <h3>Best Match</h3>
-                        <p>92%</p>
+                        <p><?php echo $bestMatch; ?>%</p>
                     </div>
                 </div>
                 <div class="stat-card">

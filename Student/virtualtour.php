@@ -10,9 +10,15 @@ $sql = "SELECT
             h.panorama_link,
             r.room_type,
             r.price,
-            r.status
+            r.status,
+            l.full_name,
+            l.phone,
+            l.email
         FROM hostels h
-        JOIN rooms r ON h.hostel_id = r.hostel_id
+        JOIN rooms r
+            ON h.hostel_id = r.hostel_id
+        LEFT JOIN landlords l
+            ON h.landlord_id = l.landlord_id
         WHERE h.hostel_id = $id
         LIMIT 1";
 $result = mysqli_query($conn,$sql);
@@ -20,7 +26,7 @@ $row = mysqli_fetch_assoc($result);
 
 //confirm student login and get student id for activity capture
 session_start();
-require '../db_connect.php';
+
 
 if (!isset($_SESSION['student_id'])) {
     header("Location: ../Login.php");
@@ -29,7 +35,7 @@ if (!isset($_SESSION['student_id'])) {
 
 $student_id = $_SESSION['student_id'];
 
-$id = (int)$_GET['id'];
+
 
 
 
@@ -136,10 +142,41 @@ $student_id,
             
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
             
-            <p style="margin-bottom: 15px;">Like what you see? Reach out to secure your spot.</p>
-            <div class="button-row">
-              <a class="button" href="#">Contact Landlord</a>
-            </div>
+
+<p style="margin-bottom:15px;">
+    Need more information? Contact the landlord directly using the details below.
+</p>
+
+<div style="margin-top:20px;">
+
+    <h3 style="margin-bottom:15px;">Landlord Contact Information</h3>
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <strong>Name</strong>
+            <span class="muted">
+                <?php echo htmlspecialchars($row['full_name']); ?>
+            </span>
+        </div>
+
+        <div class="timeline-item">
+            <strong>Phone</strong>
+            <span class="muted">
+                <?php echo htmlspecialchars($row['phone']); ?>
+            </span>
+        </div>
+
+        <div class="timeline-item">
+            <strong>Email</strong>
+            <span class="muted">
+                <?php echo htmlspecialchars($row['email']); ?>
+            </span>
+        </div>
+
+    </div>
+
+</div>
           </aside>
         </div>
       </section>

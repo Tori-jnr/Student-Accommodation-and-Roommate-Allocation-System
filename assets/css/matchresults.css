@@ -341,3 +341,30 @@ body {
         grid-template-columns: 1fr;
     }
 }
+.contact-box{
+    margin-top:20px;
+    padding:14px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.contact-box strong{
+    display:block;
+    margin-bottom:8px;
+    color:#fff;
+    font-size:.95rem;
+}
+
+.contact-box p{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0;
+    color:#9ca3af;
+    font-size:.95rem;
+}
+
+.contact-box svg{
+    width:18px;
+    height:18px;
+    color:#06b6d4;
+}

@@ -26,8 +26,14 @@ $myBudget = $myPrefs['budget'] ?? null;
 
 // This student's compatible roommates, joined to their preferences
 $stmt = mysqli_prepare($conn, "
-    SELECT rm.match_percentage, s.full_name,
-           sp.room_type, sp.study_style, sp.sleep_schedule, sp.budget
+   SELECT
+    rm.match_percentage,
+    s.full_name,
+    s.phone,
+    sp.room_type,
+    sp.study_style,
+    sp.sleep_schedule,
+    sp.budget
     FROM roommate_matches rm
     JOIN students s ON rm.matched_student_id = s.student_id
     LEFT JOIN student_preferences sp ON sp.student_id = s.student_id
@@ -155,17 +161,42 @@ function match_chip($pct) {
                   <span class="chip success" style="<?php echo $chip['style']; ?>"><?php echo $chip['label']; ?></span>
                 </div>
                 <div class="meta-list" style="margin-bottom: 15px;">
-                  <?php if (!empty($m['study_style'])): ?>
-                    <span class="chip"><?php echo htmlspecialchars(short_study_label($m['study_style'])); ?></span>
-                  <?php endif; ?>
-                  <?php if (!empty($m['sleep_schedule'])): ?>
-                    <span class="chip"><?php echo htmlspecialchars($m['sleep_schedule']); ?></span>
-                  <?php endif; ?>
-                  <?php if ($myBudget !== null && $m['budget'] !== null && abs($m['budget'] - $myBudget) <= 5000): ?>
-                    <span class="chip">Budget match</span>
-                  <?php endif; ?>
-                </div>
-                <button class="button" style="width: 100%;">Connect</button>
+    <?php if (!empty($m['study_style'])): ?>
+        <span class="chip"><?php echo htmlspecialchars(short_study_label($m['study_style'])); ?></span>
+    <?php endif; ?>
+
+    <?php if (!empty($m['sleep_schedule'])): ?>
+        <span class="chip"><?php echo htmlspecialchars($m['sleep_schedule']); ?></span>
+    <?php endif; ?>
+
+    <?php if ($myBudget !== null && $m['budget'] !== null && abs($m['budget'] - $myBudget) <= 5000): ?>
+        <span class="chip">Budget match</span>
+    <?php endif; ?>
+</div>
+
+<div style="
+    text-align:center;
+    margin-top:18px;
+    padding:14px;
+    border-top:1px solid rgba(255,255,255,.08);
+">
+    <div style="
+        font-size:13px;
+        color:#94a3b8;
+        margin-bottom:6px;
+    ">
+        Contact
+    </div>
+
+    <div style="
+        font-size:18px;
+        font-weight:600;
+        color:#ffffff;
+        letter-spacing:.5px;
+    ">
+        <?php echo htmlspecialchars($m['phone']); ?>
+    </div>
+</div>
               </article>
             <?php endforeach; ?>
           <?php else: ?>
@@ -176,7 +207,7 @@ function match_chip($pct) {
       </section>
     </main>
   </div>
-  <script src="../assets/js/matches.js"></script>
+  
   <script> lucide.createIcons() </script>
 
 </body>
