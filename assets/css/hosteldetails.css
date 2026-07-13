@@ -336,3 +336,8 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.review-item .review-stars{
+    color: #FFD700 !important;
+    font-size: 1rem;
+}

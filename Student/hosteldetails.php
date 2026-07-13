@@ -1,135 +1,222 @@
 <?php
+//confirm student login and get student id for activity capture
 session_start();
+require '../db_connect.php';
 
-if (!isset($_SESSION['student_id']) || ($_SESSION['role'] ?? '') !== 'student') {
+if (!isset($_SESSION['student_id'])) {
     header("Location: ../Login.php");
     exit();
 }
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-require '../db_connect.php';
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$student_id = $_SESSION['student_id'];
+
+
+
+
+
+if (!isset($_GET['id'])) {
+    die("Hostel not found.");
 }
 
-$hostel_id = intval($_GET['id'] ?? 0);
+$hostel_id = (int)$_GET['id'];
 
-$sql = "
+$sql = "SELECT
+            h.*,
+            r.room_type,
+            r.price,
+            r.status,
+            r.amenities,
+            l.full_name
+        FROM hostels h
+        JOIN rooms r
+            ON h.hostel_id = r.hostel_id
+        LEFT JOIN landlords l
+            ON h.landlord_id = l.landlord_id
+        WHERE h.hostel_id = $hostel_id
+        AND h.verified = 1
+        LIMIT 1";
+
+$result = mysqli_query($conn, $sql);
+
+if(mysqli_num_rows($result) == 0){
+    die("Hostel not found.");
+}
+
+$row = mysqli_fetch_assoc($result);
+$reviews = mysqli_query($conn,"
 SELECT
-    h.*,
-    r.room_type,
-    r.price,
-    r.status,
-    r.amenities,
-    l.full_name,
-    l.phone,
-    l.email
-FROM hostels h
-JOIN rooms r
-    ON h.hostel_id = r.hostel_id
-LEFT JOIN landlords l
-    ON h.landlord_id = l.landlord_id
-WHERE h.hostel_id = $hostel_id
-AND h.verified = 1
-LIMIT 1
-";
+    r.rating,
+    r.comment,
+    s.full_name,
+    r.created_at
+FROM reviews r
+JOIN students s
+    ON r.student_id = s.student_id
+WHERE r.hostel_id = $hostel_id
+ORDER BY r.created_at DESC
+");
 
-$result = $conn->query($sql);
+//activity capture for hostel view
+$description = "Viewed " . $row['name'];
+mysqli_query($conn,"
+INSERT INTO activity_log
+(student_id,activity_type,activity_title,activity_description)
+VALUES
+(
+$student_id,
+'view',
+'Viewed hostel',
+'Viewed ".$row['name']."'
+)");
 
-if ($result->num_rows === 0) {
-    die("Hostel not found or not yet approved.");
-}
-$row = $result->fetch_assoc();
 
-$photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $hostel_id ORDER BY photo_id");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($row['name']); ?> | Roomly</title>
-    <link rel="stylesheet" href="../assets/css/hosteldetails.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Details | Student Housing Portal</title>
+  <link rel="stylesheet" href="../assets/css/hosteldetails.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="dashboard-shell">
-        <aside class="sidebar">
-            <h2 class="logo">Roomly<span class="dot">.</span></h2>
+  <div class="dashboard-shell">
+    <aside class="sidebar">
+      <h2 class="logo">Roomly<span class="dot">.</span></h2>
 
-            <div class="nav-container">
-                <span class="nav-heading">Student Menu</span>
-                <nav class="nav-links">
-                    <a href="dashboard.php">
-                        <i data-lucide="layout-dashboard"></i>
-                        Dashboard
-                    </a>
-                    <a href="Hostels.php" class="active">
-                        <i data-lucide="search"></i>
-                        Search Hostels
-                    </a>
-                    <a href="Roommate.php">
-                        <i data-lucide="sliders"></i>
-                        Preferences
-                    </a>
-                    <a href="matchresults.php">
-                        <i data-lucide="sparkles"></i>
-                        Match Results
-                    </a>
-                    <a href="reviews.php">
-                        <i data-lucide="star"></i>
-                        Reviews
-                    </a>
-                </nav>
+      <div class="nav-container">
+        <span class="nav-heading">Student Menu</span>
+        <nav class="nav-links" aria-label="Student navigation">
+          <a href="dashboard.php">
+            <i data-lucide="layout-dashboard"></i>
+            Dashboard
+          </a>
+          <a class="active" href="Hostels.php">
+            <i data-lucide="search"></i>
+            Search Hostels
+          </a>
+          <a href="Roommate.php">
+            <i data-lucide="sliders"></i>
+            Preferences
+          </a>
+          <a href="matchresults.php">
+            <i data-lucide="sparkles"></i>
+            Match Results
+          </a>
+          <a href="reviews.php">
+            <i data-lucide="star"></i>
+            Reviews
+          </a>
+        </nav>
 
-                <span class="nav-heading">Account</span>
-                <nav class="nav-links">
-                    <a href="../logout.php" class="logout-link">
-                        <i data-lucide="log-out"></i>
-                        Logout
-                    </a>
-                </nav>
+        <span class="nav-heading">Account</span>
+        <nav class="nav-links" aria-label="Account navigation">
+          <a href="../logout.php" class="logout-link">
+            <i data-lucide="log-out"></i>
+            Logout
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <div class="page-title">
+          <div>
+            <h1 data-hostel-name><?php echo htmlspecialchars($row['name']); ?></h1>
+            <p data-hostel-location><?php echo htmlspecialchars($row['location']); ?></p>
+          </div>
+        </div>
+        <a class="button secondary" href="hostels.php">Back to listings</a>
+      </header>
+
+      <section class="page">
+        <div class="detail-layout">
+          <section class="detail-main">
+            <div class="detail-hero"
+              style="background-image:url('<?php echo htmlspecialchars($row['image_path']); ?>');">
             </div>
-        </aside>
-
-        <main class="main-content">
-            <a href="Hostels.php" class="back-btn">&larr; Back to listings</a>
-
-            <div class="detail-hero" style="background-image:url('../<?php echo htmlspecialchars($row['image_path']); ?>'); height: 320px; background-size: cover; background-position: center; border-radius: 16px; margin: 16px 0;"></div>
-
-            <?php if ($photos->num_rows > 0): ?>
-            <div class="panel" style="margin-bottom: 20px;">
-                <h2>Photos</h2>
-                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 12px;">
-                    <?php while ($photo = $photos->fetch_assoc()): ?>
-                        <img src="../<?php echo htmlspecialchars($photo['image_path']); ?>" alt="Hostel photo" style="width:100%; height:120px; object-fit:cover; border-radius:8px;">
-                    <?php endwhile; ?>
-                </div>
-            </div>
-            <?php endif; ?>
-
             <div class="panel">
-                <h1><?php echo htmlspecialchars($row['name']); ?></h1>
-                <p style="color: var(--text-secondary);"><?php echo htmlspecialchars($row['location']); ?></p>
-                <p style="margin-top: 12px;"><?php echo nl2br(htmlspecialchars($row['description'] ?? '')); ?></p>
+              <div class="section-title">
+                <div>
+                  <h2>Hostel information</h2>
+                  <p>Verified by system administrator.</p>
+                </div>
+                <span class="chip <?php echo $row['verified'] ? 'success' : 'warning'; ?>">
+                       <?php echo $row['verified'] ? 'Verified' : 'Pending'; ?>
+                </span>
+                </div>
+                
 
-                <div style="margin-top: 16px;">
-                    <strong>Amenities:</strong> <?php echo htmlspecialchars($row['amenities'] ?: 'Not specified'); ?>
+              </div>
+              <div class="three-column">
+                <div class="info-block">
+                  <strong>Room type</strong>
+                  <p class="muted" data-room-type><?php echo htmlspecialchars($row['room_type']); ?></p>
                 </div>
-                <div style="margin-top: 8px;">
-                    <strong>Room type:</strong> <?php echo htmlspecialchars($row['room_type']); ?> —
-                    <span style="color: var(--neon-cyan); font-weight:700;">KES <?php echo number_format($row['price']); ?></span>
+                <div class="info-block">
+                  <strong>Availability</strong>
+                  <p class="muted" data-availability><?php echo htmlspecialchars($row['status']); ?></p>
                 </div>
-                <div style="margin-top: 8px;">
-                    <strong>Managed by:</strong> <?php echo htmlspecialchars($row['full_name']); ?>
+                <div class="info-block">
+                  <strong>Price</strong>
+                  <p class="muted" data-price>KES <?php echo number_format($row['price']); ?> per semester</p>
                 </div>
-                <?php if (!empty($row['panorama_link'])): ?>
-                <div style="margin-top: 8px;">
-                    <a href="<?php echo htmlspecialchars($row['panorama_link']); ?>" target="_blank" style="color: var(--neon-blue);">View virtual tour →</a>
-                </div>
-                <?php endif; ?>
+
+                <div class="info-block">
+    <strong>Verification Date</strong>
+    <p class="muted">
+        <?php
+        echo !empty($row['verified_date'])
+            ? date("d M Y", strtotime($row['verified_date']))
+            : "Pending";
+        ?>
+    </p>
+</div>
+              </div>
             </div>
 
+<div class="panel">
+    <div class="section-title">
+        <h2>Student Reviews</h2>
+    </div>
+
+    <div class="review-list">
+
+    <?php if(mysqli_num_rows($reviews) > 0): ?>
+
+        <?php while($review = mysqli_fetch_assoc($reviews)): ?>
+
+            <div class="review-item">
+
+                <strong class="review-stars">
+                    <?php echo str_repeat("★",$review['rating']); ?>
+                    <?php echo str_repeat("☆",5-$review['rating']); ?>
+                </strong>
+
+                <p class="muted">
+                    <?php echo htmlspecialchars($review['comment']); ?>
+                </p>
+
+                <small>
+                    — <?php echo htmlspecialchars($review['full_name']); ?>
+                </small>
+
+            </div>
+
+        <?php endwhile; ?>
+
+    <?php else: ?>
+
+        <p class="muted">
+            No reviews yet. Be the first student to review this hostel.
+        </p>
+
+    <?php endif; ?>
+
+    </div>
+</div>
           </section>
 
           <aside class="panel action-panel">
@@ -144,53 +231,30 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
                   href="virtualtour.php?id=<?php echo $row['hostel_id']; ?>">
                   Open Virtual Tour
               </a>
-              
+        
             </div>
 
             <hr class="divider">
 
             <div class="timeline">
               <div class="timeline-item">
-    <strong>Landlord</strong>
-    <span class="muted">
-        <?php echo htmlspecialchars($row['full_name']); ?>
-    </span>
-</div>
-
-<div class="timeline-item">
-    <strong>Phone</strong>
-    <span class="muted">
-        <?php echo htmlspecialchars($row['phone']); ?>
-    </span>
-</div>
-
-<div class="timeline-item">
-    <strong>Email</strong>
-    <span class="muted">
-        <?php echo htmlspecialchars($row['email']); ?>
-    </span>
-</div>
+                <strong>Managed by</strong>
+                <span class="muted" data-landlord><?php echo htmlspecialchars($row['full_name']); ?></span>
+              </div>
               <div class="timeline-item">
                 <strong>Amenities</strong>
                 <span class="muted" data-amenities><?php echo htmlspecialchars($row['amenities']); ?></span>
               </div>
-              <div class="timeline-item">
-                <strong>Verification date</strong>
-                <span class="chip <?php echo $row['verified'] ? 'success' : 'warning'; ?>">
-                    <?php echo $row['verified'] ? 'Verified' : 'Unverified'; ?>
-                </span>
-              </div>
+             
             </div>
           </aside>
         </div>
       </section>
     </main>
   </div>
-  <script src="../assets/js/hosteldetails.js"></script>
+  
   <script>
     lucide.createIcons();
   </script>
-
-
 </body>
 </html>
