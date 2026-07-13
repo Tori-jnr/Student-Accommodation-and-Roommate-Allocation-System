@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_email = $conn->real_escape_string($_POST['landlord_email']);
     $new_phone = $conn->real_escape_string($_POST['landlord_phone']);
 
-    $update_sql = "UPDATE landlords SET full_name='$new_name', email='$new_email', phone='$new_phone' WHERE landlord_id='$landlord_id'";
+    $update_sql = "UPDATE landlords SET name='$new_name', email='$new_email', phone_number='$new_phone' WHERE landlord_id='$landlord_id'";
     $conn->query($update_sql);
 
     // Handle an optional new avatar photo
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $result = $conn->query("SELECT * FROM landlords WHERE landlord_id = '$landlord_id'");
 $landlord = $result->fetch_assoc();
 
-$full_name  = htmlspecialchars($landlord['full_name'] ?? '');
+$full_name  = htmlspecialchars($landlord['name'] ?? '');
 $email      = htmlspecialchars($landlord['email'] ?? '');
 $phone      = htmlspecialchars($landlord['phone'] ?? '');
 $profilePic = htmlspecialchars($landlord['profile_pic'] ?? '');

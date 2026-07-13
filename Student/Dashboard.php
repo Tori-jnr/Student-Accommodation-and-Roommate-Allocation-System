@@ -189,8 +189,7 @@ $activity_log = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
 
 <article class="hostel-card">
     <div class="hostel-image"
-         style="background-image:url('<?php echo htmlspecialchars($hostel['image_path']); ?>')">
-
+         style="background-image:url('../<?php echo htmlspecialchars($hostel['image_path']); ?>')"
         <span class="badge <?php echo $hostel['verified'] ? 'verified' : 'pending'; ?>">
             <?php echo $hostel['verified'] ? 'Verified' : 'Unverified'; ?>
         </span>
@@ -292,7 +291,7 @@ $color = [
     </div>
 
     <!-- Initialize Lucide Icons -->
-    <script>
+    // script>
         lucide.createIcons();
 
         // Sync Profile Data from Local Storage to Dashboard
@@ -322,6 +321,6 @@ $color = [
             }
         });
         
-    </script>
+    /script //
 </body>
 </html>
