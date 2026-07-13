@@ -47,14 +47,14 @@ $reviews = mysqli_fetch_assoc($q);
 
 $sql = "SELECT h.*, r.room_type, r.price 
 FROM hostels h JOIN rooms r ON h.hostel_id=r.hostel_id 
-WHERE r.status='available' AND h.verified = 1
+WHERE r.status='available' AND h.verified = 1";
 
 $result = mysqli_query($conn, $sql);
 $hostels = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 //activity log query
-$sql = "SELECT *
-        FROM activity_log
+$sql = "SELECT * 
+     FROM activity_log
         WHERE student_id = ?
         ORDER BY activity_time DESC
         LIMIT 5";
