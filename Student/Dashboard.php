@@ -45,12 +45,9 @@ $q = mysqli_query($conn,
 $reviews = mysqli_fetch_assoc($q);
 
 
-$sql = "SELECT h.*, r.room_type, r.price
-        FROM hostels h
-        JOIN rooms r
-          ON h.hostel_id=r.hostel_id
-        WHERE r.status='available'
-        LIMIT 5";
+$sql = "SELECT h.*, r.room_type, r.price 
+FROM hostels h JOIN rooms r ON h.hostel_id=r.hostel_id 
+WHERE r.status='available' AND h.verified = 1
 
 $result = mysqli_query($conn, $sql);
 $hostels = mysqli_fetch_all($result, MYSQLI_ASSOC);

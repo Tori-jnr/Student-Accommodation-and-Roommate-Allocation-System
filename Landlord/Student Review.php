@@ -17,12 +17,16 @@ $landlord_id = $_SESSION['student_id'];
 $landlordRow = $conn->query("SELECT name FROM landlords WHERE landlord_id = '$landlord_id'")->fetch_assoc();
 $landlordName = $landlordRow['name'] ?? 'Property Manager';
 
-// ---- Fetch all reviews for this landlord ----
+// ---- Fetch all reviews left on this landlord's hostels ----
 $reviews = $conn->query("
-    SELECT student_name, location, stars, comment, created_at
-    FROM reviews
-    WHERE landlord_id = '$landlord_id'
-    ORDER BY created_at DESC
+    SELECT rv.rating, rv.comment, rv.created_at,
+           s.full_name AS student_name,
+           h.name AS hostel_name
+    FROM reviews rv
+    JOIN students s ON rv.student_id = s.student_id
+    JOIN hostels h ON rv.hostel_id = h.hostel_id
+    WHERE h.landlord_id = '$landlord_id'
+    ORDER BY rv.created_at DESC
 ");
 $reviewRows = [];
 while ($row = $reviews->fetch_assoc()) {
@@ -32,7 +36,7 @@ while ($row = $reviews->fetch_assoc()) {
 $totalReviews = count($reviewRows);
 $avgRating = 0;
 if ($totalReviews > 0) {
-    $sum = array_sum(array_map('intval', array_column($reviewRows, 'stars')));
+    $sum = array_sum(array_column($reviewRows, 'rating'));
     $avgRating = round($sum / $totalReviews, 1);
 }
 
@@ -149,10 +153,10 @@ function timeAgo($datetime) {
                                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                                         <div>
                                             <h4 style="font-size: 1rem; font-weight: 600; color: var(--text-pure);"><?php echo htmlspecialchars($rv['student_name']); ?></h4>
-                                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Resident: <?php echo htmlspecialchars($rv['location']); ?></span>
+                                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Resident: <?php echo htmlspecialchars($rv['hostel_name']); ?></span>
                                         </div>
                                         <div style="text-align: right;">
-                                            <span style="color: var(--neon-cyan); font-weight: 700;"><?php echo renderStars($rv['stars']); ?></span>
+                                            <span style="color: var(--neon-cyan); font-weight: 700;"><?php echo renderStars($rv['rating']); ?></span>
                                             <small style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;"><?php echo timeAgo($rv['created_at']); ?></small>
                                         </div>
                                     </div>
