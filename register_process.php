@@ -66,14 +66,14 @@ $result->free();
 
 $stmt = $conn->prepare("
 INSERT INTO landlords
-(landlord_id, name, email, password, gender, role, phone)
+(landlord_id, name, email, password, gender, role, phone_number)
 VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 
     $stmt->bind_param(
         "sssssss",
         $landlord_id,
-        $name,
+        $full_name,
         $email,
         $hashed_password,
         $gender,
