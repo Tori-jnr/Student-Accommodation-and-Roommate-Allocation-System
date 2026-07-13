@@ -41,15 +41,18 @@ a {
   text-decoration: none;
 }
 
-/* APP SHELL FRAMEWORK (SIDEBAR & CONTROLLER PANELS)*/
-.dashboard-shell { 
-    display: flex; 
-    width: 100%; 
-    min-height: 100vh;}
+/* ==========================================================================
+   APP SHELL FRAMEWORK (SIDEBAR & CONTROLLER PANELS)
+   ========================================================================== */
+.dashboard-shell {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
 
 .sidebar {
-  width: 80px; /* Reduced layout footprint */
-    background: rgba(255, 255, 255, 0.01);
+    width: 80px;
+    background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(35px) saturate(120%);
     -webkit-backdrop-filter: blur(35px) saturate(120%);
     border-right: 1px solid var(--glass-border);
@@ -62,48 +65,103 @@ a {
     z-index: 100;
     overflow: hidden;
     white-space: nowrap;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Fluid expansion mechanics */
-
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar .brand {
-  margin-bottom: 28px;
+.sidebar:hover {
+    width: 280px;
+    padding: 40px 24px;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+.sidebar .nav-heading {
+  display: block !important;
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-top: 20px !important;
+  margin-bottom: 12px !important;
+  opacity: 1 !important;
 }
 
-.sidebar .brand small {
-  color: var(--sidebar-muted);
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-pure);
+    margin-bottom: 45px;
+    letter-spacing: -1px;
+    line-height: 1.2;
 }
 
-.side-section {
-  margin: 22px 0 8px;
-  color: var(--sidebar-muted);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
+.logo span.logo-text, .logo small, .nav-heading, .nav-links a span {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
-.side-nav {
-  display: grid;
-  gap: 5px;
+.sidebar:hover .logo span.logo-text,
+.sidebar:hover .logo small,
+.sidebar:hover .nav-heading,
+.sidebar:hover .nav-links a span {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.15s;
 }
 
-.side-nav a {
-  display: flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 9px 10px;
-  border-radius: var(--radius-sm);
-  color: #d8e0ee;
-  font-weight: 600;
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.side-nav a:hover,
-.side-nav a.active {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+.nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 14px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
 }
 
-/* ==========================================================================
+.sidebar .nav-links a svg.sidebar-icon {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    fill: none !important;
+    stroke: var(--text-secondary) !important;
+    stroke-width: 2px !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    height: 1.2em !important;
+    width: 1.2em !important;
+    flex-shrink: 0 !important;
+    transition: stroke 0.2s ease !important;
+}
+
+.sidebar:hover .nav-links a {
+    padding: 14px 18px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-pure);
+}
+
+.logout-link {
+    color: var(--text-secondary) !important;
+    margin-top: auto;
+}
+
+.logout-link:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: var(--danger) !important;
+}/* ==========================================================================
    3. SYSTEM APP BAR HEADER METRICS
    ========================================================================== */
 .main {

@@ -1,24 +1,18 @@
 <?php
-//confirm student login and get student id for activity capture
 session_start();
-require '../db_connect.php';
 
-if (!isset($_SESSION['student_id'])) {
+if (!isset($_SESSION['student_id']) || ($_SESSION['role'] ?? '') !== 'student') {
     header("Location: ../Login.php");
     exit();
 }
 
-$student_id = $_SESSION['student_id'];
-
-$id = (int)$_GET['id'];
-
-
-
-if (!isset($_GET['id'])) {
-    die("Hostel not found.");
+$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
+require '../db_connect.php';
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-$hostel_id = (int)$_GET['id'];
+$hostel_id = intval($_GET['id'] ?? 0);
 
 $sql = "
 SELECT
@@ -36,137 +30,106 @@ JOIN rooms r
 LEFT JOIN landlords l
     ON h.landlord_id = l.landlord_id
 WHERE h.hostel_id = $hostel_id
+AND h.verified = 1
 LIMIT 1
 ";
 
-$result = mysqli_query($conn, $sql);
+$result = $conn->query($sql);
 
-if(mysqli_num_rows($result) == 0){
-    die("Hostel not found.");
+if ($result->num_rows === 0) {
+    die("Hostel not found or not yet approved.");
 }
+$row = $result->fetch_assoc();
 
-$row = mysqli_fetch_assoc($result);
-
-//activity capture for hostel view
-$description = "Viewed " . $row['name'];
-mysqli_query($conn,"
-INSERT INTO activity_log
-(student_id,activity_type,activity_title,activity_description)
-VALUES
-(
-$student_id,
-'view',
-'Viewed hostel',
-'Viewed ".$row['name']."'
-)");
-
-
+$photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $hostel_id ORDER BY photo_id");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hostel Details | Student Housing Portal</title>
-  <link rel="stylesheet" href="../assets/css/hosteldetails.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($row['name']); ?> | Roomly</title>
+    <link rel="stylesheet" href="../assets/css/hosteldetails.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <div class="dashboard-shell">
-    <aside class="sidebar">
-      <h2 class="logo">Roomly<span class="dot">.</span></h2>
+    <div class="dashboard-shell">
+        <aside class="sidebar">
+            <h2 class="logo">Roomly<span class="dot">.</span></h2>
 
-      <div class="nav-container">
-        <span class="nav-heading">Student Menu</span>
-        <nav class="nav-links" aria-label="Student navigation">
-          <a href="dashboard.php">
-            <i data-lucide="layout-dashboard"></i>
-            Dashboard
-          </a>
-          <a class="active" href="Hostels.php">
-            <i data-lucide="search"></i>
-            Search Hostels
-          </a>
-          <a href="Roommate.php">
-            <i data-lucide="sliders"></i>
-            Preferences
-          </a>
-          <a href="matchresults.php">
-            <i data-lucide="sparkles"></i>
-            Match Results
-          </a>
-          <a href="reviews.php">
-            <i data-lucide="star"></i>
-            Reviews
-          </a>
-        </nav>
+            <div class="nav-container">
+                <span class="nav-heading">Student Menu</span>
+                <nav class="nav-links">
+                    <a href="dashboard.php">
+                        <i data-lucide="layout-dashboard"></i>
+                        Dashboard
+                    </a>
+                    <a href="Hostels.php" class="active">
+                        <i data-lucide="search"></i>
+                        Search Hostels
+                    </a>
+                    <a href="Roommate.php">
+                        <i data-lucide="sliders"></i>
+                        Preferences
+                    </a>
+                    <a href="matchresults.php">
+                        <i data-lucide="sparkles"></i>
+                        Match Results
+                    </a>
+                    <a href="reviews.php">
+                        <i data-lucide="star"></i>
+                        Reviews
+                    </a>
+                </nav>
 
-        <span class="nav-heading">Account</span>
-        <nav class="nav-links" aria-label="Account navigation">
-          <a href="../logout.php" class="logout-link">
-            <i data-lucide="log-out"></i>
-            Logout
-          </a>
-        </nav>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header class="main-header">
-        <div class="page-title">
-          <div>
-            <h1 data-hostel-name><?php echo htmlspecialchars($row['name']); ?></h1>
-            <p data-hostel-location><?php echo htmlspecialchars($row['location']); ?></p>
-          </div>
-        </div>
-        <a class="button secondary" href="hostels.php">Back to listings</a>
-      </header>
-
-      <section class="page">
-        <div class="detail-layout">
-          <section class="detail-main">
-            <div class="detail-hero"
-              style="background-image:url('<?php echo htmlspecialchars($row['image_path']); ?>');">
+                <span class="nav-heading">Account</span>
+                <nav class="nav-links">
+                    <a href="../logout.php" class="logout-link">
+                        <i data-lucide="log-out"></i>
+                        Logout
+                    </a>
+                </nav>
             </div>
-            <div class="panel">
-              <div class="section-title">
-                <div>
-                  <h2>Hostel information</h2>
-                  <p>Verified by system administrator.</p>
+        </aside>
+
+        <main class="main-content">
+            <a href="Hostels.php" class="back-btn">&larr; Back to listings</a>
+
+            <div class="detail-hero" style="background-image:url('../<?php echo htmlspecialchars($row['image_path']); ?>'); height: 320px; background-size: cover; background-position: center; border-radius: 16px; margin: 16px 0;"></div>
+
+            <?php if ($photos->num_rows > 0): ?>
+            <div class="panel" style="margin-bottom: 20px;">
+                <h2>Photos</h2>
+                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 12px;">
+                    <?php while ($photo = $photos->fetch_assoc()): ?>
+                        <img src="../<?php echo htmlspecialchars($photo['image_path']); ?>" alt="Hostel photo" style="width:100%; height:120px; object-fit:cover; border-radius:8px;">
+                    <?php endwhile; ?>
                 </div>
-                <span class="chip success" data-status>Verified</span>
-              </div>
-              <div class="three-column">
-                <div class="info-block">
-                  <strong>Room type</strong>
-                  <p class="muted" data-room-type><?php echo htmlspecialchars($row['room_type']); ?></p>
-                </div>
-                <div class="info-block">
-                  <strong>Availability</strong>
-                  <p class="muted" data-availability><?php echo htmlspecialchars($row['status']); ?></p>
-                </div>
-                <div class="info-block">
-                  <strong>Price</strong>
-                  <p class="muted" data-price>KES <?php echo number_format($row['price']); ?> per semester</p>
-                </div>
-              </div>
             </div>
+            <?php endif; ?>
 
             <div class="panel">
-              <div class="section-title">
-                <h2>Student reviews</h2>
-              </div>
-              <div class="review-list" data-review-list>
-                <div class="review-item">
-                  <strong>4.5 stars - Clean and close to campus</strong>
-                  <span class="muted">Security is reliable and rooms are quiet in the evening.</span>
+                <h1><?php echo htmlspecialchars($row['name']); ?></h1>
+                <p style="color: var(--text-secondary);"><?php echo htmlspecialchars($row['location']); ?></p>
+                <p style="margin-top: 12px;"><?php echo nl2br(htmlspecialchars($row['description'] ?? '')); ?></p>
+
+                <div style="margin-top: 16px;">
+                    <strong>Amenities:</strong> <?php echo htmlspecialchars($row['amenities'] ?: 'Not specified'); ?>
                 </div>
-                <div class="review-item">
-                  <strong>4 stars - Good transport access</strong>
-                  <span class="muted">The caretaker responds quickly when there is an issue.</span>
+                <div style="margin-top: 8px;">
+                    <strong>Room type:</strong> <?php echo htmlspecialchars($row['room_type']); ?> —
+                    <span style="color: var(--neon-cyan); font-weight:700;">KES <?php echo number_format($row['price']); ?></span>
                 </div>
-              </div>
+                <div style="margin-top: 8px;">
+                    <strong>Managed by:</strong> <?php echo htmlspecialchars($row['full_name']); ?>
+                </div>
+                <?php if (!empty($row['panorama_link'])): ?>
+                <div style="margin-top: 8px;">
+                    <a href="<?php echo htmlspecialchars($row['panorama_link']); ?>" target="_blank" style="color: var(--neon-blue);">View virtual tour →</a>
+                </div>
+                <?php endif; ?>
             </div>
+
           </section>
 
           <aside class="panel action-panel">
@@ -227,5 +190,7 @@ $student_id,
   <script>
     lucide.createIcons();
   </script>
+
+
 </body>
 </html>
