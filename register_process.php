@@ -62,7 +62,7 @@ $result->free();
 
 $stmt = $conn->prepare("
 INSERT INTO landlords
-(landlord_id, full_name, email, password, gender, role, phone)
+(landlord_id, name, email, password, gender, role, phone_number)
 VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 

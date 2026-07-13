@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_email = $conn->real_escape_string($_POST['landlord_email']);
     $new_phone = $conn->real_escape_string($_POST['landlord_phone']);
 
-    $update_sql = "UPDATE landlords SET full_name='$new_name', email='$new_email', phone='$new_phone' WHERE landlord_id='$landlord_id'";
+    $update_sql = "UPDATE landlords SET name='$new_name', email='$new_email', phone_number='$new_phone' WHERE landlord_id='$landlord_id'";
     $conn->query($update_sql);
 
     // Handle an optional new avatar photo
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $result = $conn->query("SELECT * FROM landlords WHERE landlord_id = '$landlord_id'");
 $landlord = $result->fetch_assoc();
 
-$full_name  = htmlspecialchars($landlord['full_name'] ?? '');
+$full_name  = htmlspecialchars($landlord['name'] ?? '');
 $email      = htmlspecialchars($landlord['email'] ?? '');
 $phone      = htmlspecialchars($landlord['phone'] ?? '');
 $profilePic = htmlspecialchars($landlord['profile_pic'] ?? '');
@@ -95,7 +95,7 @@ if (!empty($full_name)) {
                     <svg viewBox="0 0 24 24" class="sidebar-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="Student Review.html">
+                <a href="Student Review.php">
                     <svg viewBox="0 0 24 24" class="sidebar-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     <span>Student Reviews</span>
                 </a>

@@ -57,19 +57,16 @@ $q = mysqli_query($conn,
 $reviews = mysqli_fetch_assoc($q);
 
 
-$sql = "SELECT h.*, r.room_type, r.price
-        FROM hostels h
-        JOIN rooms r
-          ON h.hostel_id=r.hostel_id
-        WHERE r.status='available'
-        LIMIT 5";
+$sql = "SELECT h.*, r.room_type, r.price 
+FROM hostels h JOIN rooms r ON h.hostel_id=r.hostel_id 
+WHERE r.status='available' AND h.verified = 1";
 
 $result = mysqli_query($conn, $sql);
 $hostels = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 //activity log query
-$sql = "SELECT *
-        FROM activity_log
+$sql = "SELECT * 
+     FROM activity_log
         WHERE student_id = ?
         ORDER BY activity_time DESC
         LIMIT 5";
@@ -204,8 +201,7 @@ $activity_log = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
 
 <article class="hostel-card">
     <div class="hostel-image"
-         style="background-image:url('<?php echo htmlspecialchars($hostel['image_path']); ?>')">
-
+         style="background-image:url('../<?php echo htmlspecialchars($hostel['image_path']); ?>')"
         <span class="badge <?php echo $hostel['verified'] ? 'verified' : 'pending'; ?>">
             <?php echo $hostel['verified'] ? 'Verified' : 'Unverified'; ?>
         </span>
@@ -307,7 +303,7 @@ $color = [
     </div>
 
     <!-- Initialize Lucide Icons -->
-    <script>
+    // script>
         lucide.createIcons();
 
         // Sync Profile Data from Local Storage to Dashboard
@@ -337,6 +333,6 @@ $color = [
             }
         });
         
-    </script>
+    /script //
 </body>
 </html>
