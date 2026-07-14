@@ -1,21 +1,21 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['student_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
-    header("Location: ../Login.html");
+if (!isset($_SESSION['landlord_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
+    header("Location: ../Login.php");
     exit();
 }
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
+$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3306;
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$landlord_id = $_SESSION['student_id'];
+$landlord_id = $_SESSION['landlord_id'];
 
-$landlordRow = $conn->query("SELECT name FROM landlords WHERE landlord_id = '$landlord_id'")->fetch_assoc();
-$landlordName = $landlordRow['name'] ?? 'Property Manager';
+$landlordRow = $conn->query("SELECT full_name FROM landlords WHERE landlord_id = '$landlord_id'")->fetch_assoc();
+$landlordName = $landlordRow['full_name'] ?? 'Property Manager';
 
 // ---- Fetch all reviews left on this landlord's hostels ----
 $reviews = $conn->query("
@@ -88,7 +88,7 @@ function timeAgo($datetime) {
             <nav class="nav-links">
                 <a href="Dashboard.php">
                     <svg viewBox="0 0 24 24" class="sidebar-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-                    <span>Hostel</span>
+                    <span>Dashboard</span>
                 </a>
                 <a href="Student Review.php" class="active">
                     <svg viewBox="0 0 24 24" class="sidebar-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -119,9 +119,9 @@ function timeAgo($datetime) {
                     <h1 style="font-size: 1.8rem; font-weight: 700;">Student Reviews</h1>
                     <p style="color: var(--text-secondary); font-size: 0.95rem;">Feedback from students who've stayed at your hostels.</p>
                 </div>
-                <a class="user-pill" href="Profile.php" style="border-color: var(--glass-border); cursor: pointer; text-decoration: none;">
-                    <div class="avatar" style="background: var(--neon-blue); color: #ffffff;"><?php echo strtoupper(substr($landlordName,0,1)); ?></div>
-                    <span class="username" style="font-size: 0.9rem; font-weight: 600;"><?php echo htmlspecialchars($landlordName); ?></span>
+                <a href="Profile.php" class="user-profile-widget" style="text-decoration: none;">
+                    <div class="profile-container"><?php echo strtoupper(substr($landlordName,0,1)); ?></div>
+                    <span class="username"><?php echo htmlspecialchars($landlordName); ?></span>
                 </a>
             </header>
 
@@ -156,7 +156,7 @@ function timeAgo($datetime) {
                                             <span style="font-size: 0.8rem; color: var(--text-secondary);">Resident: <?php echo htmlspecialchars($rv['hostel_name']); ?></span>
                                         </div>
                                         <div style="text-align: right;">
-                                            <span style="color: var(--neon-cyan); font-weight: 700;"><?php echo renderStars($rv['rating']); ?></span>
+                                            <span style="color: #eab308; font-weight: 700;"><?php echo renderStars($rv['rating']); ?></span>
                                             <small style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;"><?php echo timeAgo($rv['created_at']); ?></small>
                                         </div>
                                     </div>

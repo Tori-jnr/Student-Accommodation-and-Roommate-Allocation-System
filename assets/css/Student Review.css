@@ -300,4 +300,32 @@ a {
   gap: 14px !important;
 }
 
+/* Match the profile widget used on Dashboard.php for visual consistency */
+.user-profile-widget {
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-border);
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+}
 
+.profile-container {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  color: #060b13;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.username {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-pure);
+}

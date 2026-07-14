@@ -1,115 +1,338 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['student_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
-    header("Location: ../Login.html");
+
+
+
+if (!isset($_SESSION['landlord_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
+    header("Location: ../Login.php");
     exit();
 }
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once "../db_connect.php";
 
-$landlord_id = $_SESSION['student_id'];
+$landlord_id = $_SESSION['landlord_id'];
 
-$landlordRow = $conn->query("SELECT name FROM landlords WHERE landlord_id = '$landlord_id'")->fetch_assoc();
-$landlordName = $landlordRow['name'] ?? 'Property Manager';
 
-$flash = '';
 
-// ---- Handle "List New Accommodation" form submission ----
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_listing') {
-    $title       = $conn->real_escape_string(trim($_POST['title'] ?? ''));
-    $location    = $conn->real_escape_string(trim($_POST['location'] ?? ''));
-    $layout      = $conn->real_escape_string(trim($_POST['layout'] ?? 'Single Room'));
-    $price       = intval($_POST['price'] ?? 0);
-    $amenities   = $conn->real_escape_string(trim($_POST['amenities'] ?? ''));
-    $description = $conn->real_escape_string(trim($_POST['description'] ?? ''));
-    $panorama    = $conn->real_escape_string(trim($_POST['virtual_tour'] ?? ''));
 
-    if ($title === '' || $location === '' || $price <= 0 || empty($_FILES['photos']['name'][0])) {
-        $flash = 'error';
-    } else {
-        // Save uploaded photos to disk
-        $uploadDir = '../uploads/hostels/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-        $savedPaths = [];
-        $fileCount = count($_FILES['photos']['name']);
+//Display landlord information
 
-        for ($i = 0; $i < $fileCount; $i++) {
-            if ($_FILES['photos']['error'][$i] !== UPLOAD_ERR_OK) continue;
-            $mime = mime_content_type($_FILES['photos']['tmp_name'][$i]);
-            if (!in_array($mime, $allowedTypes)) continue;
-            $ext = pathinfo($_FILES['photos']['name'][$i], PATHINFO_EXTENSION);
-            $safeName = 'h_' . uniqid() . '_' . $i . '.' . strtolower($ext);
-            if (move_uploaded_file($_FILES['photos']['tmp_name'][$i], $uploadDir . $safeName)) {
-                $savedPaths[] = 'uploads/hostels/' . $safeName;
-            }
-        }
 
-        if (empty($savedPaths)) {
-            $flash = 'error';
-        } else {
-            $coverImage = $conn->real_escape_string($savedPaths[0]);
+//----------------------------------------------------
+// Get landlord information
+//----------------------------------------------------
 
-            $conn->query("
-                INSERT INTO hostels (landlord_id, landlord, name, location, description, amenities, image_path, panorama_link, verified)
-                VALUES ('$landlord_id', '$landlordName', '$title', '$location', '$description', '$amenities', '$coverImage', '$panorama', 0)
-            ");
-            $hostel_id = $conn->insert_id;
-
-            foreach ($savedPaths as $path) {
-                $safePath = $conn->real_escape_string($path);
-                $conn->query("INSERT INTO hostel_photos (hostel_id, image_path) VALUES ($hostel_id, '$safePath')");
-            }
-
-            $conn->query("INSERT INTO rooms (hostel_id, room_type, price, status) VALUES ($hostel_id, '$layout', $price, 'available')");
-
-            $safeTitle = $conn->real_escape_string($title);
-            $conn->query("INSERT INTO activity_log (student_id, activity_type, activity_title, activity_description) VALUES (1, 'listing', 'New Listing Submitted', 'Hostel listing \'$safeTitle\' was submitted by $landlordName and is awaiting admin verification.')");
-
-            $flash = 'created';
-        }
-    }
-}
-
-// ---- Handle room availability toggle ----
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'toggle') {
-    $room_id = intval($_POST['room_id'] ?? 0);
-    $check = $conn->query("
-        SELECT r.room_id, r.status FROM rooms r
-        JOIN hostels h ON r.hostel_id = h.hostel_id
-        WHERE r.room_id = $room_id AND h.landlord_id = '$landlord_id'
-    ")->fetch_assoc();
-    if ($check) {
-        $newStatus = $check['status'] === 'available' ? 'occupied' : 'available';
-        $conn->query("UPDATE rooms SET status = '$newStatus' WHERE room_id = $room_id");
-    }
-}
-
-// ---- Fetch this landlord's listings ----
-$listingsResult = $conn->query("
-    SELECT h.hostel_id, h.name, h.location, h.verified, h.image_path,
-           r.room_id, r.room_type, r.price, r.status AS room_status
-    FROM hostels h
-    JOIN rooms r ON r.hostel_id = h.hostel_id
-    WHERE h.landlord_id = '$landlord_id'
-    ORDER BY h.created_at DESC
+$stmt = $conn->prepare("
+    SELECT full_name
+    FROM landlords
+    WHERE landlord_id = ?
 ");
-$listingRows = [];
-while ($row = $listingsResult->fetch_assoc()) {
-    $listingRows[] = $row;
+
+$stmt->bind_param("s", $landlord_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$landlord = $result->fetch_assoc();
+
+$landlordName = $landlord['full_name'] ?? "Landlord";
+
+$flash = "";
+
+
+//----------------------------------------------------
+// ADD NEW PROPERTY
+//----------------------------------------------------
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'
+    && isset($_POST['action'])
+    && $_POST['action'] === 'add_listing') {
+
+    $title      = trim($_POST['title']);
+    $location   = trim($_POST['location']);
+    $layout     = trim($_POST['layout']);
+    $price      = (int)$_POST['price'];
+    $amenities  = trim($_POST['amenities']);
+    $virtual    = trim($_POST['virtual_tour']);
+
+    if ($title == "" || $location == "" || $price <= 0) {
+
+        $flash = "error";
+
+    } else {
+
+        //------------------------------------------------
+        // Upload image
+        //------------------------------------------------
+
+        $imagePath = "";
+
+        if (!empty($_FILES['photos']['name'][0])) {
+
+            $uploadDir = "../uploads/hostels/";
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileName = time() . "_" . basename($_FILES['photos']['name'][0]);
+
+            $target = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['photos']['tmp_name'][0], $target)) {
+
+                $imagePath = "uploads/hostels/" . $fileName;
+
+            }
+
+        }
+
+
+        //------------------------------------------------
+        // Insert into PROPERTIES
+        //------------------------------------------------
+
+        $stmt = $conn->prepare("
+            INSERT INTO properties
+            (
+                landlord_id,
+                title,
+                layout,
+                price,
+                status,
+                status_color,
+                hostel_images,
+                virtual_tour_file
+            )
+            VALUES
+            (?, ?, ?, ?, 'Available', 'green', ?, ?)
+        ");
+
+        $stmt->bind_param(
+            "sssiss",
+            $landlord_id,
+            $title,
+            $layout,
+            $price,
+            $imagePath,
+            $virtual
+        );
+
+        $stmt->execute();
+
+        $property_id = $conn->insert_id;
+
+
+        //------------------------------------------------
+        // Insert into HOSTELS
+        //------------------------------------------------
+
+        $verificationCode = strtoupper(substr(md5(time()),0,8));
+
+        $stmt = $conn->prepare("
+            INSERT INTO hostels
+            (
+                property_id,
+                landlord_id,
+                name,
+                location,
+                verified,
+                verification_code,
+                image_path,
+                panorama_link
+            )
+            VALUES
+            (?, ?, ?, ?, 0, ?, ?, ?)
+        ");
+
+        $stmt->bind_param(
+            "issssss",
+            $property_id,
+            $landlord_id,
+            $title,
+            $location,
+            $verificationCode,
+            $imagePath,
+            $virtual
+        );
+
+        $stmt->execute();
+
+        $hostel_id = $conn->insert_id;
+
+
+        //------------------------------------------------
+        // Insert room
+        //------------------------------------------------
+
+        $stmt = $conn->prepare("
+            INSERT INTO rooms
+            (
+                hostel_id,
+                room_type,
+                price,
+                status,
+                amenities
+            )
+            VALUES
+            (?, ?, ?, 'available', ?)
+        ");
+
+        $stmt->bind_param(
+            "isis",
+            $hostel_id,
+            $layout,
+            $price,
+            $amenities
+        );
+
+        $stmt->execute();
+
+        $flash = "created";
+
+    }
+
 }
 
-$totalCount = count($listingRows);
-$verifiedCount = count(array_filter($listingRows, fn($r) => intval($r['verified']) === 1));
-$pendingCount = $totalCount - $verifiedCount;
-$occupiedCount = count(array_filter($listingRows, fn($r) => $r['room_status'] === 'occupied'));
+
+
+//----------------------------------------------------
+// Dashboard Statistics
+//----------------------------------------------------
+
+$totalProperties = 0;
+$verifiedCount = 0;
+$pendingCount = 0;
+$occupiedRooms = 0;
+
+$result = $conn->query("
+SELECT COUNT(*) total
+FROM properties
+WHERE landlord_id='$landlord_id'
+");
+
+if($row = $result->fetch_assoc()){
+    $totalProperties = $row['total'];
+}
+
+
+$result = $conn->query("
+SELECT COUNT(*) total
+FROM hostels
+WHERE landlord_id='$landlord_id'
+AND verified=1
+");
+
+if($row = $result->fetch_assoc()){
+    $verifiedCount = $row['total'];
+}
+
+$pendingCount = $totalProperties - $verifiedCount;
+
+
+$result = $conn->query("
+SELECT COUNT(*) total
+FROM rooms r
+JOIN hostels h
+ON r.hostel_id=h.hostel_id
+WHERE h.landlord_id='$landlord_id'
+AND r.status='occupied'
+");
+
+if($row = $result->fetch_assoc()){
+    $occupiedRooms = $row['total'];
+}
+
+
+
+//----------------------------------------------------
+// Fetch landlord listings
+//----------------------------------------------------
+
+$listingRows = [];
+
+$stmt = $conn->prepare("
+SELECT
+    p.property_id,
+    h.hostel_id,
+    h.name,
+    h.location,
+    h.verified,
+    h.image_path,
+
+    r.room_id,
+    r.room_type,
+    r.price,
+    r.status AS room_status
+
+FROM properties p
+
+INNER JOIN hostels h
+ON p.property_id = h.property_id
+
+LEFT JOIN rooms r
+ON h.hostel_id = r.hostel_id
+
+WHERE p.landlord_id = ?
+
+ORDER BY h.created_at DESC
+");
+
+$stmt->bind_param("s",$landlord_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+while($row=$result->fetch_assoc()){
+    $listingRows[]=$row;
+}
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------
+// Toggle room availability
+//----------------------------------------------------
+
+if(
+    $_SERVER['REQUEST_METHOD']=="POST"
+    &&
+    isset($_POST['action'])
+    &&
+    $_POST['action']=="toggle"
+){
+
+    $room_id=(int)$_POST['room_id'];
+
+    $stmt=$conn->prepare("
+    UPDATE rooms
+    SET status=
+        CASE
+            WHEN status='available'
+            THEN 'occupied'
+            ELSE 'available'
+        END
+    WHERE room_id=?
+    ");
+
+    $stmt->bind_param("i",$room_id);
+    $stmt->execute();
+
+    header("Location: Dashboard.php");
+    exit();
+}
+
+
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -176,10 +399,22 @@ $occupiedCount = count(array_filter($listingRows, fn($r) => $r['room_status'] ==
             <?php endif; ?>
 
             <section class="stats-row">
-                <div class="stat-card"><h3>Total Properties</h3><p class="cyan-glow"><?php echo $totalCount; ?></p></div>
-                <div class="stat-card"><h3>Verified &amp; Live</h3><p class="blue-glow"><?php echo $verifiedCount; ?></p></div>
-                <div class="stat-card"><h3>Pending Verification</h3><p class="yellow-glow"><?php echo $pendingCount; ?></p></div>
-                <div class="stat-card"><h3>Occupied Rooms</h3><p class="purple-glow" style="font-size: 1.25rem; margin-top: 6px;"><?php echo $occupiedCount; ?></p></div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-cyan"><svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></div>
+                    <div><h3>Total Properties</h3><p class="cyan-glow"><?php echo $totalProperties; ?></p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+                    <div><h3>Verified &amp; Live</h3><p class="blue-glow"><?php echo $verifiedCount; ?></p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-yellow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                    <div><h3>Pending Verification</h3><p class="yellow-glow"><?php echo $pendingCount; ?></p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple"><svg viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                    <div><h3>Occupied Rooms</h3><p class="purple-glow"><?php echo $occupiedRooms; ?></p></div>
+                </div>
             </section>
 
             <div class="content-grid">
@@ -188,42 +423,203 @@ $occupiedCount = count(array_filter($listingRows, fn($r) => $r['room_status'] ==
                     <div style="width: 100%; overflow-x: auto;">
                         <table class="data-table" style="width: 100%; border-collapse: collapse;">
                             <thead>
-                                <tr style="text-align: left;">
-                                    <th style="padding: 14px 12px;">Hostel</th>
-                                    <th style="padding: 14px 12px;">Layout</th>
-                                    <th style="padding: 14px 12px;">Price</th>
-                                    <th style="padding: 14px 12px;">Verification</th>
-                                    <th style="padding: 14px 12px;">Room Status</th>
-                                    <th style="padding: 14px 12px; text-align: center;">Controls</th>
+                                <tr style="text-align:left;">
+                                    <th style="padding:14px;">Image</th>
+                                    <th style="padding:14px;">Hostel</th>
+                                    <th style="padding:14px;">Location</th>
+                                    <th style="padding:14px;">Room</th>
+                                    <th style="padding:14px;">Price</th>
+                                    <th style="padding:14px;">Verification</th>
+                                    <th style="padding:14px;">Status</th>
+                                    <th style="padding:14px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if (empty($listingRows)): ?>
-                                    <tr><td colspan="6" style="padding: 24px; text-align: center; color: var(--text-secondary);">No accommodations listed yet. Use the form to add your first hostel.</td></tr>
-                                <?php else: foreach ($listingRows as $row): ?>
-                                    <tr style="border-bottom: 1px solid var(--glass-border);">
-                                        <td style="padding: 16px 12px; font-weight: 600;"><?php echo htmlspecialchars($row['name']); ?></td>
-                                        <td style="padding: 16px 12px; color: var(--text-secondary);"><?php echo htmlspecialchars($row['room_type']); ?></td>
-                                        <td style="padding: 16px 12px; font-weight: 600; color: var(--neon-cyan);">KES <?php echo number_format($row['price']); ?></td>
-                                        <td style="padding: 16px 12px;">
-                                            <?php if ($row['verified']): ?>
-                                                <span style="color: var(--success); font-weight: 600; font-size: 0.85rem;">● Verified</span>
-                                            <?php else: ?>
-                                                <span style="color: var(--warning); font-weight: 600; font-size: 0.85rem;">● Pending Admin Verification</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td style="padding: 16px 12px; text-transform: capitalize;"><?php echo htmlspecialchars($row['room_status']); ?></td>
-                                        <td style="padding: 16px 12px; text-align: center;">
-                                            <form method="POST" style="display:inline;">
-                                                <input type="hidden" name="room_id" value="<?php echo $row['room_id']; ?>">
-                                                <input type="hidden" name="action" value="toggle">
-                                                <button type="submit" class="btn btn-secondary" style="font-size: 0.75rem; padding: 6px 12px;">
-                                                    <?php echo $row['room_status'] === 'available' ? 'Mark Occupied' : 'Mark Available'; ?>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; endif; ?>
+                                    <tr><td colspan="8" style="padding: 24px; text-align: center; color: var(--text-secondary);">No accommodations listed yet. Use the form to add your first hostel.</td></tr>
+                                <?php endif; ?>
+                                <?php if(empty($listingRows)): ?>
+
+<tr>
+<td colspan="8" style="padding:25px;text-align:center;">
+No hostels found.
+</td>
+</tr>
+
+<?php else: ?>
+
+<?php foreach($listingRows as $row): ?>
+
+<tr>
+
+<td style="padding:10px;">
+
+<?php
+
+$image="../".$row['image_path'];
+
+if(!empty($row['image_path']) && file_exists($image))
+{
+
+?>
+
+<img
+src="<?php echo htmlspecialchars($image); ?>"
+style="
+width:90px;
+height:70px;
+object-fit:cover;
+border-radius:10px;
+">
+
+<?php
+}
+else
+{
+?>
+
+<div style="
+width:90px;
+height:70px;
+background:#222;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+font-size:12px;
+">
+No Image
+</div>
+
+<?php
+}
+?>
+
+</td>
+
+<td>
+
+<strong>
+
+<?php echo htmlspecialchars($row['name']); ?>
+
+</strong>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['location']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['room_type']); ?>
+
+</td>
+
+<td>
+
+KES <?php echo number_format($row['price']); ?>
+
+</td>
+
+<td>
+
+<?php
+
+if($row['verified'])
+{
+?>
+
+<span style="color:#22c55e;font-weight:bold;">
+✔ Verified
+</span>
+
+<?php
+}
+else
+{
+?>
+
+<span style="color:#f59e0b;font-weight:bold;">
+Pending
+</span>
+
+<?php
+}
+?>
+
+</td>
+
+<td>
+
+<?php
+
+if($row['room_status']=="available")
+{
+
+?>
+
+<span style="color:#22c55e;">
+Available
+</span>
+
+<?php
+
+}
+else
+{
+
+?>
+
+<span style="color:#ef4444;">
+Occupied
+</span>
+
+<?php
+
+}
+
+?>
+
+</td>
+
+<td>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+<form method="POST">
+    <input type="hidden" name="room_id" value="<?php echo $row['room_id']; ?>">
+    <input type="hidden" name="action" value="toggle">
+
+    <button class="btn btn-secondary">
+        <?php echo ($row['room_status']=="available") ? "Mark as Occupied" : "Mark as Vacant"; ?>
+    </button>
+</form>
+
+<a href="edit_property.php?id=<?php echo $row['property_id']; ?>"
+class="btn btn-primary">
+Edit
+</a>
+
+<a
+href="delete_property.php?id=<?php echo $row['property_id']; ?>"
+class="btn btn-danger"
+onclick="return confirm('Delete this property?');">
+Delete
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+<?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -247,23 +643,20 @@ $occupiedCount = count(array_filter($listingRows, fn($r) => $r['room_status'] ==
                                     <label for="room-spec">Room Layout</label>
                                     <select id="room-spec" name="layout">
                                         <option value="Single Room">Single Room</option>
-                                        <option value="2 bedroom">2 bedroom</option>
-                                        <option value="4 bedroom">4 bedroom</option>
-                                        <option value="Studio">Studio</option>
+                                        <option value="Double Room">Double Room</option>
+                                        <option value="Triple Room">Triple Room</option>
+                                        <option value="Four Sharing">Four Sharing</option>
+                                        <option value="Premium Studio">Premium Studio</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="room-price">Price (Per Sem)</label>
+                                    <label for="room-price">Price (Per Month)</label>
                                     <input type="number" id="room-price" name="price" placeholder="Amount (KSH)" required min="1">
                                 </div>
                             </div>
                             <div>
                                 <label for="amenities">Amenities</label>
                                 <input type="text" id="amenities" name="amenities" placeholder="e.g., WiFi, Water, Security, Parking">
-                            </div>
-                            <div>
-                                <label for="description">Description</label>
-                                <textarea id="description" name="description" rows="3" placeholder="Tell students about this hostel..." style="width: 100%; padding: 10px; background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border); border-radius: 8px; color: #fff;"></textarea>
                             </div>
                             <div>
                                 <label for="property-photos">Upload Hostel Images</label>

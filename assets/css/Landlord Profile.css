@@ -349,3 +349,64 @@ box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
 transform: translateY(-2px);
 box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5);
 }
+
+/* Lucide icons default to a large size with no color set - constrain and tint them */
+.back-btn svg,
+.upload-label svg,
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.sidebar .nav-links a svg.sidebar-icon {
+    display: inline-block !important; opacity: 1 !important; visibility: visible !important;
+    fill: none !important; stroke: var(--text-secondary) !important; stroke-width: 2px !important;
+    stroke-linecap: round !important; stroke-linejoin: round !important;
+    height: 1.2em !important; width: 1.2em !important; flex-shrink: 0 !important;
+    transition: stroke 0.2s ease !important;
+}
+
+.sidebar .nav-links a:hover svg.sidebar-icon,
+.sidebar .nav-links a.active svg.sidebar-icon {
+    stroke: var(--neon-cyan) !important;
+}
+
+/* Success toast for profile save confirmation */
+.save-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #a7f3d0;
+  padding: 14px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  z-index: 999;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s;
+  animation-fill-mode: forwards;
+}
+
+.save-toast svg {
+  width: 18px;
+  height: 18px;
+  stroke: #10b981;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

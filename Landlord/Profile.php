@@ -2,13 +2,13 @@
 session_start();
 
 // 1. SECURITY: If no one is logged in as a landlord, send them back to login
-if (!isset($_SESSION['student_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
-    header("Location: ../Login.html");
+if (!isset($_SESSION['landlord_id']) || ($_SESSION['role'] ?? '') !== 'landlord') {
+    header("Location: ../Login.php");
     exit();
 }
 
 // Connect to database
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
+$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3306;
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
@@ -17,15 +17,19 @@ if ($conn->connect_error) {
 
 // Get the REAL logged-in landlord's ID from the session
 // (login_process.php stores it in $_SESSION['student_id'] for both roles)
-$landlord_id = $_SESSION['student_id'];
+$landlord_id = $_SESSION['landlord_id'];
 
 // 1. IF THE USER CLICKS "SAVE CHANGES" (process the form)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_profile'])) { 
     $new_name  = $conn->real_escape_string($_POST['landlord_name']);
     $new_email = $conn->real_escape_string($_POST['landlord_email']);
     $new_phone = $conn->real_escape_string($_POST['landlord_phone']);
 
-    $update_sql = "UPDATE landlords SET name='$new_name', email='$new_email', phone_number='$new_phone' WHERE landlord_id='$landlord_id'";
+    $update_sql = "UPDATE landlords SET
+        full_name='$new_name',
+        email='$new_email',
+        phone='$new_phone'
+        WHERE landlord_id='$landlord_id'";
     $conn->query($update_sql);
 
     // Handle an optional new avatar photo
@@ -43,15 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->query("UPDATE landlords SET profile_pic='$picPath' WHERE landlord_id='$landlord_id'");
         }
     }
+
+    header("Location: Profile.php?saved=1");
+    exit();
 }
 
 // 2. FETCH LATEST DATA TO DISPLAY ON SCREEN
 $result = $conn->query("SELECT * FROM landlords WHERE landlord_id = '$landlord_id'");
 $landlord = $result->fetch_assoc();
 
-$full_name  = htmlspecialchars($landlord['name'] ?? '');
+$full_name = htmlspecialchars($landlord['full_name'] ?? '');
 $email      = htmlspecialchars($landlord['email'] ?? '');
-$phone      = htmlspecialchars($landlord['phone'] ?? '');
+$phone = htmlspecialchars($landlord['phone'] ?? '');
 $profilePic = htmlspecialchars($landlord['profile_pic'] ?? '');
 
 // Fetch this landlord's hostel names for the read-only "Hostels" field
@@ -119,6 +126,13 @@ if (!empty($full_name)) {
 </aside>
 
         <main class="main-content">
+            <?php if (isset($_GET['saved'])): ?>
+                <div class="save-toast">
+                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    Changes saved successfully
+                </div>
+            <?php endif; ?>
+
             <header class="top-header">
                 <div class="welcome-text">
                     <h1>My Profile</h1>
@@ -177,7 +191,7 @@ if (!empty($full_name)) {
                         </div>
 
                         <div class="form-actions">
-                            <button type="submit" class="action-btn">
+                            <button type="submit" name="save_profile" class="action-btn">
                                 <i data-lucide="save"></i> Save Changes
                             </button>
                         </div>
