@@ -176,6 +176,33 @@ exit();
 <title>Edit Property</title>
 
 <link rel="stylesheet" href="../assets/css/Landlord Dashboard.css">
+<style>
+    /* Scoped fixes for the Edit Property page only */
+    .edit-container .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .edit-title {
+        margin-bottom: 6px;
+    }
+    .edit-subtitle {
+        margin-top: 6px;
+    }
+    .edit-container .back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 8px;
+        flex-shrink: 0;
+        font-size: 18px;
+        text-decoration: none;
+    }
+</style>
 </head>
 
 <body>
@@ -200,8 +227,8 @@ Update your property information.
 
 </div>
 
-<a href="Dashboard.php" class="back-btn">
-← Back to Dashboard
+<a href="Dashboard.php" class="back-btn" title="Back to Dashboard" aria-label="Back to Dashboard">
+←
 </a>
 
 </div>

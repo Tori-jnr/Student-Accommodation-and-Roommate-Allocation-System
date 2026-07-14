@@ -90,6 +90,11 @@ box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     height: 1.2em !important; width: 1.2em !important; flex-shrink: 0 !important;
     transition: stroke 0.2s ease !important;
 }
+
+.sidebar .nav-links a:hover svg.sidebar-icon,
+.sidebar .nav-links a.active svg.sidebar-icon {
+    stroke: var(--neon-cyan) !important;
+}
 .logo {
 font-size: 1.8rem;
 font-weight: 800;

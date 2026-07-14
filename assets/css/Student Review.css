@@ -95,6 +95,17 @@ a {
     line-height: 1.2;
 }
 
+.my-text {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex-grow: 1;
+}
+
+.my-text > div:last-child {
+    margin-top: auto;
+}
+
 .logo span.logo-text, .logo small, .nav-heading, .nav-links a span {
     opacity: 0;
     transition: opacity 0.2s ease;
@@ -142,6 +153,11 @@ a {
     width: 1.2em !important;
     flex-shrink: 0 !important;
     transition: stroke 0.2s ease !important;
+}
+
+.sidebar .nav-links a:hover svg.sidebar-icon,
+.sidebar .nav-links a.active svg.sidebar-icon {
+    stroke: var(--neon-cyan) !important;
 }
 
 .sidebar:hover .nav-links a {

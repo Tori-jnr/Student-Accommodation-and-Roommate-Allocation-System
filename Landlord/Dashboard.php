@@ -456,15 +456,30 @@ No hostels found.
 
 <?php
 
-$image="../".$row['image_path'];
+$rawPath = $row['image_path'];
+$hasImage = false;
+$imageSrc = "";
 
-if(!empty($row['image_path']) && file_exists($image))
-{
+if (!empty($rawPath)) {
+    if (preg_match('#^https?://#i', $rawPath)) {
+        // External URL (e.g. seeded demo images) - use as-is, no local file check
+        $imageSrc = $rawPath;
+        $hasImage = true;
+    } else {
+        // Locally uploaded file - verify it actually exists on disk
+        $localPath = "../" . ltrim($rawPath, "/");
+        if (file_exists($localPath)) {
+            $imageSrc = $localPath;
+            $hasImage = true;
+        }
+    }
+}
 
+if ($hasImage) {
 ?>
 
 <img
-src="<?php echo htmlspecialchars($image); ?>"
+src="<?php echo htmlspecialchars($imageSrc); ?>"
 style="
 width:90px;
 height:70px;
