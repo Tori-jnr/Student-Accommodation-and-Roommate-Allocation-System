@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

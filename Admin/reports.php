@@ -5,8 +5,7 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     exit();
 }
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -33,7 +32,7 @@ $compiledAt = date('d M Y, h:i A');
   <div class="app-shell">
     <aside class="sidebar">
       <div class="logo">
-        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+        <span>Roomly<span class="dot">.</span></span>
       </div>
 
       <div class="side-section">Admin Operations</div>
@@ -57,7 +56,10 @@ $compiledAt = date('d M Y, h:i A');
       </nav>
       <div class="side-section">Account Control</div>
       <nav class="side-nav" aria-label="Account navigation">
-        <a href="../logout.php">Logout</a>
+        <a href="../logout.php" class="logout-link">
+          <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </a>
       </nav>
     </aside>
 
@@ -67,13 +69,16 @@ $compiledAt = date('d M Y, h:i A');
           <h1>System Reports</h1>
           <p>Audit registrations, listings, and system activity.</p>
         </div>
-        <button class="button" id="print-report-btn" style="padding: 10px 18px; font-size: 0.85rem;">Print summary</button>
 
-<div class="user-pill">
-    <span class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 1)); ?></span>
-    <span><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
-</div>
+        <div class="user-pill">
+          <span class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 1)); ?></span>
+          <span><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
+        </div>
       </header>
+
+      <div style="margin-bottom: 24px;">
+        <button class="button" id="print-report-btn" style="padding: 10px 18px; font-size: 0.85rem;">Print summary</button>
+      </div>
 
       <section class="page">
         <div class="dashboard-grid">

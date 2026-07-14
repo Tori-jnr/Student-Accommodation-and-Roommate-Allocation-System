@@ -6,8 +6,7 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
 }
 
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -47,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $safeName = $conn->real_escape_string($coverRow['name'] ?? '');
         $conn->query("INSERT INTO activity_log (student_id, activity_type, activity_title, activity_description) VALUES (1, 'rejection', 'Listing Rejected', 'Hostel \'$safeName\' was rejected and removed from the system.')");
 
+        // rooms/reviews reference hostel_id with no ON DELETE CASCADE, so they must go first
+        $conn->query("DELETE FROM reviews WHERE hostel_id = $hostel_id");
+        $conn->query("DELETE FROM rooms WHERE hostel_id = $hostel_id");
         $conn->query("DELETE FROM hostels WHERE hostel_id = $hostel_id");
 
         header('Location: verify_listings.php?status=rejected');
@@ -55,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $result = $conn->query("
-    SELECT h.*, l.name AS landlord_name, l.email AS landlord_email, l.phone_number AS landlord_phone
+    SELECT h.*, l.full_name AS landlord_name, l.email AS landlord_email, l.phone AS landlord_phone
     FROM hostels h
     LEFT JOIN landlords l ON h.landlord_id = l.landlord_id
     WHERE h.hostel_id = $hostel_id
@@ -67,8 +69,14 @@ if (!$hostel) {
     exit();
 }
 
-$rooms = $conn->query("SELECT room_type, price, status FROM rooms WHERE hostel_id = $hostel_id");
+$rooms = $conn->query("SELECT room_type, price, status, amenities FROM rooms WHERE hostel_id = $hostel_id");
 $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $hostel_id ORDER BY photo_id");
+
+$amenitiesList = '';
+$roomsAmenities = $conn->query("SELECT amenities FROM rooms WHERE hostel_id = $hostel_id AND amenities IS NOT NULL LIMIT 1");
+if ($roomsAmenities && $roomsAmenities->num_rows > 0) {
+    $amenitiesList = $roomsAmenities->fetch_assoc()['amenities'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +97,7 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
   <div class="app-shell">
     <aside class="sidebar">
       <div class="logo">
-        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+        <span>Roomly<span class="dot">.</span></span>
       </div>
 
       <div class="side-section">Admin Operations</div>
@@ -113,7 +121,10 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
       </nav>
       <div class="side-section">Account Control</div>
       <nav class="side-nav" aria-label="Account navigation">
-        <a href="../logout.php">Logout</a>
+        <a href="../logout.php" class="logout-link">
+          <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </a>
       </nav>
     </aside>
 
@@ -123,13 +134,16 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
           <h1><?php echo htmlspecialchars($hostel['name']); ?></h1>
           <p><?php echo htmlspecialchars($hostel['location']); ?></p>
         </div>
-        <a class="button secondary" href="verify_listings.php">Back to queue</a>
 
-<div class="user-pill">
-    <span class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 1)); ?></span>
-    <span><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
-</div>
+        <div class="user-pill">
+          <span class="avatar"><?php echo strtoupper(substr($_SESSION['admin_name'], 0, 1)); ?></span>
+          <span><?php echo htmlspecialchars($_SESSION['admin_name']); ?></span>
+        </div>
       </header>
+
+      <div style="margin-bottom: 24px;">
+        <a class="button secondary" href="verify_listings.php">Back to queue</a>
+      </div>
 
       <section class="page">
         <div class="panel" style="margin-bottom: 20px;">
@@ -139,7 +153,8 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
           <?php else: ?>
             <div class="photo-grid">
               <?php if (!empty($hostel['image_path'])): ?>
-                <img src="../<?php echo htmlspecialchars($hostel['image_path']); ?>" alt="Cover photo">
+                <?php $coverSrc = (stripos($hostel['image_path'], 'http') === 0) ? $hostel['image_path'] : '../' . $hostel['image_path']; ?>
+                <img src="<?php echo htmlspecialchars($coverSrc); ?>" alt="Cover photo">
               <?php endif; ?>
               <?php while ($photo = $photos->fetch_assoc()): ?>
                 <img src="../<?php echo htmlspecialchars($photo['image_path']); ?>" alt="Hostel photo">
@@ -150,11 +165,10 @@ $photos = $conn->query("SELECT image_path FROM hostel_photos WHERE hostel_id = $
 
         <div class="panel" style="margin-bottom: 20px;">
           <div class="section-title"><h2>Listing details</h2></div>
-          <div class="info-row"><span>Landlord</span><strong><?php echo htmlspecialchars($hostel['landlord_name'] ?? $hostel['landlord']); ?></strong></div>
+          <div class="info-row"><span>Landlord</span><strong><?php echo htmlspecialchars($hostel['landlord_name'] ?? 'Unknown'); ?></strong></div>
           <div class="info-row"><span>Landlord contact</span><strong><?php echo htmlspecialchars(($hostel['landlord_email'] ?? '') . ' · ' . ($hostel['landlord_phone'] ?? '')); ?></strong></div>
           <div class="info-row"><span>Location</span><strong><?php echo htmlspecialchars($hostel['location']); ?></strong></div>
-          <div class="info-row"><span>Amenities</span><strong><?php echo htmlspecialchars($hostel['amenities'] ?: 'Not specified'); ?></strong></div>
-          <div class="info-row"><span>Description</span><strong><?php echo htmlspecialchars($hostel['description'] ?: 'Not provided'); ?></strong></div>
+          <div class="info-row"><span>Amenities</span><strong><?php echo htmlspecialchars($amenitiesList ?: 'Not specified'); ?></strong></div>
           <?php if (!empty($hostel['panorama_link'])): ?>
           <div class="info-row"><span>Virtual tour</span><strong><a href="<?php echo htmlspecialchars($hostel['panorama_link']); ?>" target="_blank" style="color: var(--neon-blue);">Open link</a></strong></div>
           <?php endif; ?>

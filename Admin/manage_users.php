@@ -5,13 +5,12 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     exit();
 }
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$landlords = $conn->query("SELECT landlord_id, name, email, phone_number FROM landlords ORDER BY name");
+$landlords = $conn->query("SELECT landlord_id, full_name, email, phone FROM landlords ORDER BY full_name");
 $students  = $conn->query("SELECT student_id, full_name, email, phone, university FROM students ORDER BY full_name");
 ?>
 <!DOCTYPE html>
@@ -27,7 +26,7 @@ $students  = $conn->query("SELECT student_id, full_name, email, phone, universit
   <div class="app-shell">
     <aside class="sidebar">
       <div class="logo">
-        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+        <span>Roomly<span class="dot">.</span></span>
       </div>
 
       <div class="side-section">Admin Operations</div>
@@ -51,7 +50,10 @@ $students  = $conn->query("SELECT student_id, full_name, email, phone, universit
       </nav>
       <div class="side-section">Account Control</div>
       <nav class="side-nav" aria-label="Account navigation">
-        <a href="../logout.php">Logout</a>
+        <a href="../logout.php" class="logout-link">
+          <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </a>
       </nav>
     </aside>
 
@@ -86,9 +88,9 @@ $students  = $conn->query("SELECT student_id, full_name, email, phone, universit
               <?php else: while ($row = $landlords->fetch_assoc()): ?>
                 <tr>
                   <td><?php echo htmlspecialchars($row['landlord_id']); ?></td>
-                  <td style="font-weight:600;"><?php echo htmlspecialchars($row['name']); ?></td>
+                  <td style="font-weight:600;"><?php echo htmlspecialchars($row['full_name']); ?></td>
                   <td><?php echo htmlspecialchars($row['email']); ?></td>
-                  <td><?php echo htmlspecialchars($row['phone_number']); ?></td>
+                  <td><?php echo htmlspecialchars($row['phone']); ?></td>
                 </tr>
               <?php endwhile; endif; ?>
             </tbody>

@@ -6,8 +6,7 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
 }
 
 
-$host = "127.0.0.1"; $username = "root"; $password = ""; $dbname = "roomly_db"; $port = 3307;
-$conn = new mysqli($host, $username, $password, $dbname, $port);
+$conn = new mysqli('localhost', 'root', '', 'roomly_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -18,8 +17,9 @@ $student_count  = $conn->query("SELECT COUNT(*) AS total FROM students")->fetch_
 $landlord_count = $conn->query("SELECT COUNT(*) AS total FROM landlords")->fetch_assoc()['total'];
 
 $pendingListings = $conn->query("
-    SELECT h.hostel_id, h.name, h.location, h.created_at, h.landlord
+    SELECT h.hostel_id, h.name, h.location, h.created_at, l.full_name AS landlord
     FROM hostels h
+    LEFT JOIN landlords l ON h.landlord_id = l.landlord_id
     WHERE h.verified = 0
     ORDER BY h.created_at DESC
     LIMIT 5
@@ -39,7 +39,7 @@ $logs = $conn->query("SELECT activity_title, activity_description FROM activity_
   <div class="app-shell">
     <aside class="sidebar">
       <div class="logo">
-        <span class="logo-text">Roomly<span class="dot" style="color: var(--neon-cyan); font-weight: 900;">.</span></span>
+        <span>Roomly<span class="dot">.</span></span>
       </div>
 
       <div class="side-section">Admin Operations</div>
@@ -63,7 +63,10 @@ $logs = $conn->query("SELECT activity_title, activity_description FROM activity_
       </nav>
       <div class="side-section">Account Control</div>
       <nav class="side-nav" aria-label="Account navigation">
-        <a href="../logout.php">Logout</a>
+        <a href="../logout.php" class="logout-link">
+          <svg viewBox="0 0 24 24" class="sidebar-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </a>
       </nav>
     </aside>
 

@@ -92,14 +92,14 @@ a {
 }
 
 /* Hidden typography descriptors that reveal seamlessly on menu expand hover */
-.brand span:not(.brand-mark), .brand small, .side-section, .side-nav a span:not(.nav-icon) {
+.logo span:not(.dot), .logo small, .side-section, .side-nav a span:not(.nav-icon) {
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;
 }
 
-.sidebar:hover .brand span:not(.brand-mark),
-.sidebar:hover .brand small,
+.sidebar:hover .logo span:not(.dot),
+.sidebar:hover .logo small,
 .sidebar:hover .side-section,
 .sidebar:hover .side-nav a span:not(.nav-icon) {
     opacity: 1;
@@ -154,14 +154,65 @@ a {
 }
 
 /* Specific logout action trigger styling mapping overrides */
-.side-nav a[href*="index"] {
+.side-nav a.logout-link {
     color: var(--text-secondary);
     margin-top: 10px;
 }
 
-.side-nav a[href*="index"]:hover {
+.side-nav a.logout-link:hover {
     background: rgba(239, 68, 68, 0.1) !important;
     color: var(--danger) !important;
+}
+
+/* Sidebar logo, matching the style used across Student/Landlord dashboards */
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-pure);
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+}
+
+.logo .dot {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Buttons (was completely undefined in this stylesheet, e.g. "Open queue" had no styling) */
+.button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:not(.secondary) {
+    background: linear-gradient(135deg, var(--neon-blue), #0044ff);
+    color: var(--text-pure);
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.2);
+}
+
+.button:not(.secondary):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
+}
+
+.button.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border);
+    color: var(--text-pure);
+}
+
+.button.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
 }
 
 /* ==========================================================================
@@ -194,7 +245,7 @@ a {
     font-size: 0.95rem;
 }
 
-/* User Identity Pill capsule widget rules */
+/* User Identity Pill capsule widget rules (display-only, no click destination) */
 .user-pill {
     background: var(--glass-panel);
     border: 1px solid var(--glass-border);
@@ -203,16 +254,7 @@ a {
     display: flex;
     align-items: center;
     gap: 12px;
-    cursor: pointer;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.user-pill:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--neon-cyan);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 240, 255, 0.15);
 }
 
 .avatar {
@@ -425,4 +467,3 @@ a {
 .sidebar .side-nav a:hover svg.sidebar-icon {
     stroke: var(--text-pure) !important;
 }
-
